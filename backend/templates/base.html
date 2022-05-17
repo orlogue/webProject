@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'backend/css/style.css' %}" rel="stylesheet">
+    <script src="{% static 'backend/js/script.js' %}"></script>
+    <title>{% block global_title %}News{% endblock %}</title>
+</head>
+<body>
+
+{% include 'include/_nav.html' %}
+
+<div class="container mt-3 bm-3">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+            {% else %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% block div_title %}
+        <div class="d-flex {% if page_obj.has_other_pages %}justify-content-between{% endif %}">
+{#            <h1>#}
+                {% block title %}
+                {% endblock %}
+{#            </h1>#}
+        </div>
+    {% endblock %}
+    {#    <div class="row justify-content-center">#}
+    {% block main_part %}
+        {#            <div class="col-md-2 mb-4">#}
+        {#                {% block sidebar %}#}
+        {#                {% endblock %}#}
+        {#            </div>#}
+
+        {#            <div class="col-md-10 d-flex flex-column">#}
+        {% block content %}
+        {% endblock %}
+        {#                {% include 'include/_paginator.html' %}#}
+        {#            </div>#}
+    {% endblock %}
+</div>
+{#</div>#}
+<script src="{% static 'socialmedia/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+{#<script src="{% static 'socialmedia/bootstrap/js/bootstrap.min.js' %}"></script>#}
+</body>
+</html>
