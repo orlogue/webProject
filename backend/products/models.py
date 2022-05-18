@@ -9,11 +9,6 @@ class Category(models.Model):
         return self.title
 
 
-# class Order(models.Model):
-#         product = models.ForeignKey('Product', on_delete=models.CASCADE)
-#         seller = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='buyer')
-#         created = models.DateTimeField(auto_now_add=True)
-#         # status = models.CharField()
 
 
 class Product(models.Model):

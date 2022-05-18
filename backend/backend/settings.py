@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# import django
+# django.setup()
+# from profiles.models import Profile
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -128,3 +133,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'profiles.Profile'
+LOGIN_REDIRECT_URL = 'homepage'
+

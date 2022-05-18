@@ -1,8 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.urls import reverse_lazy
+from django.views.generic import FormView
+
 from profiles.forms import SignupForm, LoginForm
 
 
@@ -22,15 +25,32 @@ def signup(request):
 
 
 def profile_login(request):
+    if request.user.is_authenticated:
+        return redirect('homepage')
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
+        # if form.is_valid():
+        #     phone_number = request.POST['phone_number']
+        #     password = request.POST['password']
+        #     user = authenticate(phone_number=phone_number, password=password)
+        #     if user is not None:
+        #         login(request, user)
+        #         return redirect('homepage')
+        #     else:
+        #         messages.error(request, 'Что-то пошло не так')
+        #         return redirect('login')
         if form.is_valid():
-            profile = form.get_user()
-            login(request, profile)
+            user = form.get_user()
+            login(request, user)
             return redirect('homepage')
     else:
         form = LoginForm()
     return render(request, 'profiles/login.html', {'form': form})
+
+# class LoginView(FormView):
+#     form_class = LoginForm
+#     template_name = 'profiles/login.html'
+#     success_url = reverse_lazy('homepage')
 
 
 def user_logout(request):
