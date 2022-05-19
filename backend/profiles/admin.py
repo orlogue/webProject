@@ -5,27 +5,24 @@ from .models import Profile, Building
 
 # Register your models here.
 
-# class CustomUserAdmin(UserAdmin):
-#     # add_form = CustomUserCreationForm
-#     # form = CustomUserChangeForm
-#     # model = CustomUser
-#     list_display = ('email', 'is_staff', 'is_active',)
-#     list_filter = ('email', 'is_staff', 'is_active',)
-#     fieldsets = (
-#         (None, {'fields': ('email', 'password')}),
-#         ('Permissions', {'fields': ('is_staff', 'is_active')}),
-#     )
-#     add_fieldsets = (
-#         (None, {
-#             'classes': ('wide',),
-#             'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
-#         ),
-#     )
-#     search_fields = ('email',)
-#     ordering = ('email',)
-#
-#
-# admin.site.register(CustomUser, CustomUserAdmin)
 
-admin.site.register(Profile)
+class ProfileAdmin(UserAdmin):
+    model = Profile
+    list_display = ('phone_number', 'name', 'building', 'room', 'is_staff', 'is_active',)
+    list_filter = ('phone_number', 'building', 'is_staff', 'is_active',)
+    fieldsets = (
+        (None, {'fields': ('phone_number', 'password')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+    )
+    # add_fieldsets = (
+    #     (None, {
+    #         'classes': ('wide',),
+    #         'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
+    #     ),
+    # )
+    search_fields = ('phone_number', 'name')
+    ordering = ('phone_number', 'name')
+
+
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Building)
