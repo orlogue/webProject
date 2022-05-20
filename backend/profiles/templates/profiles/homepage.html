@@ -9,19 +9,35 @@
 {% endblock %}
 
 {% block main_part %}
-<a href="{% url 'product_list' %}">All</a>
-{% for c in categories %}
-<li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
-{% endfor %}
-
-<div>
-    <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
-    {% for product in products %}
     <div>
-        <a href="{{ product.get_absolute_url }}"></a>
-        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
-        ${{ product.price }}
+        <h3>Categories</h3>
+        <ul>
+            <li>
+                <a href="{% url 'product_list' %}">All</a>
+            </li>
+            {% for c in categories %}
+                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
-    {% endfor %}
-</div>
+    <div>
+        <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+        {% for product in products %}
+            <div>
+                <a href="{{ product.get_absolute_url }}"></a>
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>{{ product.seller.name }}<br>
+                ${{ product.price }}
+            </div>
+            <br>
+        {% endfor %}
+    </div>
+
+<p class="price">${{ product.price }}</p>
+<form action="{% url 'cart_add' product.id %}" method="post">
+    {{ cart_product_form }}
+    {% csrf_token %}
+    <input type="submit" value="Add to cart">
+</form>
 {% endblock %}

@@ -5,7 +5,6 @@ from profiles.models import Profile
 from django.urls import reverse
 
 
-
 class Category(models.Model):
     name = models.CharField(max_length=200, default="")
 
@@ -18,7 +17,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product:product_list_by_category')
+        return reverse('product_list_by_category')
 
 
 class Product(models.Model):
@@ -31,6 +30,7 @@ class Product(models.Model):
     count = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    description = models.TextField(blank=True)
 
     class Meta:
         ordering = ('name',)
@@ -41,9 +41,13 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('product_detail',
-                       args=[self.id, self.slug])
+                       args=[self.pk, self.slug])
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name + '-' + rand_slug())
         super(Product, self).save(*args, **kwargs)
+
+class Order:
+    buyer = models.ForeignKey(Profile, on_delete=models.CASCADE()
+    products = 
