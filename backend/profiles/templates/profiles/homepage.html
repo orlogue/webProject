@@ -28,16 +28,22 @@
             <div>
                 <a href="{{ product.get_absolute_url }}"></a>
                 <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>{{ product.seller.name }}<br>
-                ${{ product.price }}
+{#                ${{ product.price }} #}
+                <p class="price">${{ product.price }}</p>
+                <form action="{% url "cart_add" product.id %}" method="post">
+                    {{ cart_product_form }}
+                    {% csrf_token %}
+                    <input type="submit" value="Add to cart">
+                </form>
             </div>
             <br>
         {% endfor %}
     </div>
 
-<p class="price">${{ product.price }}</p>
-<form action="{% url 'cart_add' product.id %}" method="post">
-    {{ cart_product_form }}
-    {% csrf_token %}
-    <input type="submit" value="Add to cart">
-</form>
+{#<p class="price">${{ product.price }}</p>#}
+{#<form action="{% url 'cart_add' product_id=product.id %}" method="post">#}
+{#    {{ cart_product_form }}#}
+{#    {% csrf_token %}#}
+{#    <input type="submit" value="Add to cart">#}
+{#</form>#}
 {% endblock %}

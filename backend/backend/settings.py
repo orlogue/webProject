@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -133,3 +134,5 @@ AUTH_USER_MODEL = 'profiles.Profile'
 LOGIN_REDIRECT_URL = 'homepage'
 
 CART_SESSION_ID = 'cart'
+SESSION_COOKIE_AGE = 2592000
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
