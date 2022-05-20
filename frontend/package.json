@@ -10,6 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@vue/cli": "^5.0.4",
+    "axios": "^0.27.2",
     "vue": "^2.5.2"
   },
   "devDependencies": {
