@@ -1,38 +1,20 @@
 <template>
   <div id="app">
-    <HelloWorld/>
-    {{ profiles }}
-<!--    sjglskdjglksdjgs-->
-<!--    <ul>-->
-<!--      <li v-for="(profile, index) in object.data['profiles']" :key="index">{{ profile }}</li>-->
-<!--    </ul>-->
-<!--    <li v-for="(profile, index) in object.data['profiles']" :key="index">{{ profile }}</li>-->
+    <div id="nav">
+      <router-link to="/">Home</router-link>
+      <router-link to="/registration">Registration</router-link>
+    </div>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import HelloWorld from "./components/HelloWorld";
-
 export default {
-  name: 'app',
-  components: {HelloWorld},
-  // data: () => ({
-  //   profiles: []
-  // }),
-  data() {
-    return {
-      profiles: []
-    }
-  },
-  mounted () {
-    axios.get('http://localhost:8000/api/profiles/').then((response) => {
-      this.profiles = response.data
-    })
-  }
+  name: 'App',
+  components: {}
+
 }
 </script>
-
 
 <style>
 #app {

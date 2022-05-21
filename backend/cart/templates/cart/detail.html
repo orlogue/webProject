@@ -36,8 +36,8 @@
                         </form>
                     </td>
                     <td><a href="{% url 'cart_remove' product.id %}">Remove</a></td>
-                    <td class="num">${{ item.price }}</td>
-                    <td class="num">${{ item.total_price }}</td>
+                    <td class="num">{{ item.price }}₽</td>
+                    <td class="num">{{ item.total_price }}₽</td>
                 </tr>
             {% endwith %}
         {% endfor %}
@@ -50,6 +50,11 @@
     </table>
     <p class="text-right">
         <a href="{% url 'product_list' %}" class="button light">Continue shopping</a>
-        <a href="#" class="button">Checkout</a>
+{#        <a href="{% url 'order_create' %}" class="button">Checkout</a>#}
+        <form action="{% url 'order_create' %}" method="post" class="order-form">
+{#            {{ form.as_p }}#}
+            <p><input type="submit" value="Купить"></p>
+            {% csrf_token %}
+        </form>
     </p>
 {% endblock %}

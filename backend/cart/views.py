@@ -10,7 +10,7 @@ from .forms import CartAddProductForm
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
+    form = CartAddProductForm(request.POST, quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)])
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(product=product,
@@ -32,6 +32,6 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     cart = Cart(request)
     for item in cart:
-        item['update_quantity_form'] = CartAddProductForm(
-            initial={'quantity': item['quantity'], 'update': True})
+        item['update_quantity_form'] = CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, item['product'].quantity + 1)],
+            initial={'quantity': item['quantity'], 'update': True},)
     return render(request, 'cart/detail.html', {'cart': cart})

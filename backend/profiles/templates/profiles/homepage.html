@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load index %}
 {% block global_title %}
 {% if category %}{{ category.name }}{% else %}Products{% endif %}
 {% endblock %}
@@ -28,10 +28,9 @@
             <div>
                 <a href="{{ product.get_absolute_url }}"></a>
                 <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>{{ product.seller.name }}<br>
-{#                ${{ product.price }} #}
-                <p class="price">${{ product.price }}</p>
+                <p class="price">{{ product.price }}₽</p>
                 <form action="{% url "cart_add" product.id %}" method="post">
-                    {{ cart_product_form }}
+                    {{ cart_product_forms|index:forloop.counter0 }}
                     {% csrf_token %}
                     <input type="submit" value="Add to cart">
                 </form>
