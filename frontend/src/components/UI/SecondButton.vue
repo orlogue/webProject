@@ -1,5 +1,5 @@
 <template>
-  <button class="btns">
+  <button class="btns1">
     <!--   все. что мы используем в май батн, будет
     уходить в этот слот  -->
     <slot></slot>
@@ -8,19 +8,18 @@
 
 <script>
 export default {
-  name: 'my-button'
 }
 </script>
 
 <style scoped>
-.btns {
+.btns1 {
   border-style: none;
   align-self: flex-end;
   background-color: #81b29a;
   transition: all .9s;
 }
-.btns:hover{
-  opacity: 0.5;
+.btns1:hover{
+  color: #E07A5F;
 
 }
 

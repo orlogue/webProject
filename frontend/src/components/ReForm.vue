@@ -104,7 +104,7 @@ export default {
         const formData = {
           phone_number: this.phone_number,
           name: this.name,
-          builting: this.building,
+          building: this.building,
           room: this.room,
           password: this.password
         }

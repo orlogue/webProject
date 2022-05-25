@@ -26,9 +26,7 @@
         купить нужные товары<br>
         на кампусе ДВФУ</div>
     </div>
-    <div class="footer">
-      ©2022
-    </div>
+<my-footer></my-footer>
 
     <my-window v-model:show="dialogVisible">
         <au-form></au-form>
@@ -45,11 +43,12 @@ import MyButton from "@/components/UI/MyButton";
 import MyWindow from "@/components/UI/MyWindow";
 import AuForm from "@/components/AuForm";
 import ReForm from "@/components/ReForm";
+import MyFooter from "@/components/UI/MyFooter";
 export default {
   components: {
     ReForm,
     AuForm,
-    MyWindow, MyButton
+    MyWindow, MyButton,MyFooter
   },
   data(){
     return {
@@ -140,17 +139,6 @@ body{
   font-size: 45px ;
   color: #3D405B;
 }
-.footer {
-  background: #81b29a;
-  margin-top: 120px;
-  padding-left: 710px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.window {
 
-}
-.window1 {
 
-}
 </style>

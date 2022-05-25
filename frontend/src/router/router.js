@@ -1,4 +1,7 @@
-import GeneralPage from "@/components/GeneralPage";
+import GeneralPage from "@/components/pages/GeneralPage";
+import MyProduct from "@/components/pages/MyProduct";
+import MyCategory from "@/components/pages/MyCategory";
+import MyProfile from "@/components/pages/MyProfile";
 import {createRouter, createWebHistory} from "vue-router";
 
 const routes = [
@@ -6,6 +9,19 @@ const routes = [
       path: '/',
       component: GeneralPage
     },
+    {
+        path: '/product',
+        component: MyProduct
+    },
+    {
+        path: '/category',
+        component: MyCategory
+    },
+    {
+        path: '/profile',
+        component: MyProfile
+    },
+
 ]
 
 
