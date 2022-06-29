@@ -6,7 +6,7 @@ from profiles.models import Profile
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200, default="")
+    name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
@@ -17,13 +17,23 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
     def get_absolute_url(self):
         return reverse('product_list_by_category', args=[self.slug])
 
 
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, related_name='subcategory', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, default="")
     slug = models.SlugField(max_length=200, db_index=True, unique=True, default='')
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
@@ -41,13 +51,19 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product_detail',
-                       args=[self.id, self.slug])
+        return f'/{self.category.slug}/{self.slug}/'
+        # return reverse('product_detail',
+        #                args=[self.id, self.slug])
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name + '-' + rand_slug())
         super(Product, self).save(*args, **kwargs)
+
+    def get_image(self):
+        if self.image:
+            return 'http://127.0.0.1:8000/' + self.image.url
+        return ''
 
     # def get_range(self):
     #     return [(i, str(i)) for i in range(1, self.quantity + 1)]

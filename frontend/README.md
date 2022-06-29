@@ -1,4 +1,7 @@
 # frontend
+# ДОДЕЛАТЬ 
+1) PRODUCT VIEW 45:00,
+2) CART 57:00
 
 ## Project setup
 ```
@@ -13,11 +16,6 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration

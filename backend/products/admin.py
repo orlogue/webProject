@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, OrderItem, Order
+from .models import Category, SubCategory, Product, OrderItem, Order
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -8,10 +8,17 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 
+class SubCategoryAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'category']
+    list_filter = ['category']
+
+
+admin.site.register(SubCategory, SubCategoryAdmin)
+
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'price', 'quantity', 'created', 'updated']
-    list_filter = ['created', 'updated']
+    list_display = ['name', 'slug', 'category', 'price', 'quantity', 'created', 'updated']
+    list_filter = ['category', 'created', 'updated']
     list_editable = ['price', 'quantity']
     prepopulated_fields = {'slug': ('name',)}
 

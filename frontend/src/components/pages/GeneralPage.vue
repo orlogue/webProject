@@ -1,41 +1,50 @@
 <template>
-  <body>
-    <div class="navbar">
-      <strong><div class="logo">Рынок</div></strong>
-      <div class="btn">
+  <div class="navbar py-3 px-4">
+    <div class="logo"><strong>FEFU market</strong></div>
+    <div class="">
       <my-button
+          v-if="!this.$store.state.isAuthenticated"
           class="entrance"
           @click="showDialog"
       >Войти
       </my-button>
       <my-button
+          v-if="!this.$store.state.isAuthenticated"
           class="entrance1"
           @click="showDialog1"
       >Регистрация
       </my-button>
-      </div>
+      <my-button
+          v-else
+          class="entrance1"
+          @click="this.$router.push('/category')"
+      >Перейти в магазин
+      </my-button>
     </div>
-    <img class="image1" src="@/static/1.png">
-    <div class="base">
-      Добро пожаловать <br>
-      на Рынок
+  </div>
+  <img class="image1" src="@/static/1.png" alt="">
+  <div class="base">
+    Добро пожаловать <br>
+    на FEFU market
+  </div>
+  <div class="info">
+    <img class="image3" src="@/static/3.png" alt="">
+    <div class="base2">Эта платформа поможет вам<br>
+      купить нужные товары<br>
+      на кампусе ДВФУ
     </div>
-    <div class="info">
-      <img class="image3" src="@/static/3.png">
-      <div class="base2">Эта платформа поможет вам<br>
-        купить нужные товары<br>
-        на кампусе ДВФУ</div>
-    </div>
-<my-footer></my-footer>
+  </div>
+  <div class="footer">
+    ©2022
+  </div>
 
-    <my-window v-model:show="dialogVisible">
-        <au-form></au-form>
-    </my-window>
-    <my-window v-model:show="dialogVisible1">
-        <re-form></re-form>
-    </my-window>
+  <my-window v-model:show="dialogVisible">
+    <au-form></au-form>
+  </my-window>
+  <my-window v-model:show="dialogVisible1">
+    <re-form></re-form>
+  </my-window>
 
-  </body>
 </template>
 
 <script>
@@ -43,14 +52,14 @@ import MyButton from "@/components/UI/MyButton";
 import MyWindow from "@/components/UI/MyWindow";
 import AuForm from "@/components/AuForm";
 import ReForm from "@/components/ReForm";
-import MyFooter from "@/components/UI/MyFooter";
+
 export default {
   components: {
     ReForm,
     AuForm,
-    MyWindow, MyButton,MyFooter
+    MyWindow, MyButton
   },
-  data(){
+  data() {
     return {
       dialogVisible: false,
       dialogVisible1: false,
@@ -58,10 +67,10 @@ export default {
 
   },
   methods: {
-    showDialog(){
+    showDialog() {
       this.dialogVisible = true;
     },
-    showDialog1(){
+    showDialog1() {
       this.dialogVisible1 = true;
     },
   }
@@ -69,35 +78,40 @@ export default {
 }
 </script>
 
-<style >
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Ruda&display=swap');
-body{
+
+body {
   background-image: url('@/static/2.jpg');
   margin: 0;
   padding: 0;
-  font-family: 'Ruda', sans-serif;
+  font-family: 'Ruda', sans-serif !important;
   position: relative;
 }
- .btn1 {
-  font-size: 25px ;
+
+.btn1 {
+  font-size: 25px;
   color: #3D405B;
 }
+
 .navbar {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  margin: 30px;
+  /*height: 50px;*/
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*margin: 30px;*/
 }
+
 .entrance {
-  margin-left: auto;
-  margin-bottom: 15px;
-  font-size: 25px ;
+  /*margin-left: auto;*/
+  /*margin-bottom: 15px;*/
+  font-size: 25px;
   color: #3D405B;
 }
+
 .entrance1 {
-  margin-left: auto;
-  margin-bottom: 15px;
-  font-size: 25px ;
+  /*margin-left: auto;*/
+  /*margin-bottom: 15px;*/
+  font-size: 25px;
   color: #3D405B;
 }
 
@@ -106,11 +120,13 @@ body{
   color: #3D405B;
   margin-left: 10px;
 }
+
 .image1 {
   margin-top: 100px;
   margin-left: -168px;
   width: 1000px;
 }
+
 .base {
   font-size: 70px;
   position: absolute;
@@ -119,26 +135,44 @@ body{
   color: #3D405B;
 
 }
+
 .btn {
-  margin:  0 0 0  1050px;
+  margin: 0 0 0 1050px;
 }
+
 .info {
   background: #81b29a; /* Цвет фона */
-  box-shadow: 0 0 10px rgba(0,0,0,0.2); /* Параметры тени */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Параметры тени */
   padding: 100px 0 100px 100px;
   margin: 40px 200px 0 200px;
   border-radius: 20px;
 }
+
 .image3 {
   width: 450px;
 }
+
 .base2 {
   margin-left: 550px;
   margin-top: -300px;
   margin-bottom: 15px;
-  font-size: 45px ;
+  font-size: 45px;
   color: #3D405B;
 }
 
+.footer {
+  background: #81b29a;
+  margin-top: 120px;
+  padding-left: 710px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 
+.window {
+
+}
+
+.window1 {
+
+}
 </style>

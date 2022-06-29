@@ -1,11 +1,11 @@
 <template>
-  <div class="dialog" v-if="show" >
-    <div @click.stop class="dialog__content">
+  <div class="dialog " v-if="show">
+    <div @click.stop class="dialog__content d-flex flex-column">
       <button
           class="btn_close"
           @click="closeWindow"
       >
-        <img  class="close" src="@/static/close.png">
+        <img class="close" src="@/static/close.png" alt="">
       </button>
       <slot></slot>
     </div>
@@ -14,18 +14,15 @@
 </template>
 
 <script>
-
 export default {
-
-  props:{
-    show:{
+  props: {
+    show: {
       type: Boolean,
       default: false
     }
   },
-  methods:{
-
-    closeWindow(){
+  methods: {
+    closeWindow() {
       this.$emit('update:show', false)
     }
   }
@@ -38,11 +35,13 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   display: flex;
 }
-.dialog__content{
+
+.dialog__content {
   margin: auto;
   background: #f4f1de;
   border-radius: 12px;
@@ -50,18 +49,21 @@ export default {
   min-width: 300px;
   padding: 10px;
 }
+
 .close {
   width: 25px;
   border-style: none;
 }
+
 .btn_close {
   background-color: #f4f1de;
-  align-self: flex-end;
-  margin-left: 270px;
+  /*align-self: flex-end;*/
+  align-self: end;
   border-style: none;
   transition: all .6s;
 }
-.btn_close:hover{
+
+.btn_close:hover {
   opacity: 0.7;
   background-color: #f4f1de;
 }

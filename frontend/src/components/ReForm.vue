@@ -6,66 +6,66 @@
 
         <form @submit.prevent="submitForm">
           <div class="input">
-          <div class="">
-            <label>Номер телефона</label>
             <div class="">
-              <input type="text" class="" v-model="phone_number">
+              <label>Номер телефона</label>
+              <div class="">
+                <input type="text" class="" v-model="phone_number">
+              </div>
             </div>
-          </div>
 
-          <div class="">
-            <label>Имя</label>
             <div class="">
-              <input type="text" class="" v-model="name">
+              <label>Имя</label>
+              <div class="">
+                <input type="text" class="" v-model="name">
+              </div>
             </div>
-          </div>
 
-          <div class="">
-            <label>Корпус</label>
             <div class="">
-              <select class="build" v-model="building">>
-                <option></option>
-                <option>7.2</option>
-                <option>6.2</option>
-                <option>6.1</option>
-                <option>8.2</option>
-                <option>7.1</option>
-                <option>8.1</option>
-              </select>
+              <label>Корпус</label>
+              <div class="">
+                <select class="build" v-model="building">
+                  <option></option>
+                  <option>7.2</option>
+                  <option>6.2</option>
+                  <option>6.1</option>
+                  <option>8.2</option>
+                  <option>7.1</option>
+                  <option>8.1</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <div class="">
-            <label>Комната</label>
             <div class="">
-              <input type="text" class="" v-model="room">
+              <label>Комната</label>
+              <div class="">
+                <input type="text" class="" v-model="room">
+              </div>
             </div>
-          </div>
 
-          <div class="">
-            <label>Пароль</label>
             <div class="">
-              <input type="password" class="" v-model="password">
+              <label>Пароль</label>
+              <div class="">
+                <input type="password" class="" v-model="password">
+              </div>
             </div>
-          </div>
 
-          <div class="">
-            <label>Повторите пароль</label>
             <div class="">
-              <input type="password" class="" v-model="password2">
+              <label>Повторите пароль</label>
+              <div class="">
+                <input type="password" class="" v-model="password2">
+              </div>
             </div>
-          </div>
 
-          <div class="error1" v-if="errors.length">
-            <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-          </div>
+            <div class="error1" v-if="errors.length">
+              <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+            </div>
 
-          <div class="">
             <div class="">
-              <br>
-              <button class="btn_reg">Зарегистрироваться</button>
+              <div class="">
+                <br>
+                <button class="btn_reg">Зарегистрироваться</button>
+              </div>
             </div>
-          </div>
           </div>
         </form>
 
@@ -76,8 +76,6 @@
 
 <script>
 import axios from 'axios'
-import { toast } from 'bulma-toast'
-
 
 export default {
 
@@ -94,9 +92,9 @@ export default {
     }
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.errors = []
-      if (this.phone_number === '' || this.name === '' || this.building === ''|| this.room === '' || this.password === '' ) {
+      if (this.phone_number === '' || this.name === '' || this.building === '' || this.room === '' || this.password === '') {
         this.errors.push('Введите все данные')
       }
 
@@ -108,18 +106,9 @@ export default {
           room: this.room,
           password: this.password
         }
-        axios
+        await axios
             .post("/api/v1/users/", formData)
-            .then(() => {
-              toast({
-                message: 'Account created, please log in!',
-                type: 'is-success',
-                dismissible: true,
-                pauseOnHover: true,
-                duration: 2000,
-                position: 'bottom-right',
-              })
-              this.$router.push('/log-in')
+            .then(response => {
             })
             .catch(error => {
               if (error.response) {
@@ -133,6 +122,19 @@ export default {
                 console.log(JSON.stringify(error))
               }
             })
+        await axios
+            .post('/auth/token/login/', {
+              phone_number: formData['phone_number'],
+              password: formData['password']
+            })
+            .then(response => {
+              const token = response.data.auth_token
+              this.$store.commit('setToken', token)
+
+              axios.defaults.headers.common["Authorization"] = "Token " + token
+              localStorage.setItem("token", token)
+              this.$router.push('/category')
+            })
       }
     }
   }
@@ -144,19 +146,22 @@ export default {
   margin: 20px 50px 50px 50px;
   padding: 0;
 }
+
 .btn_reg {
   background-color: #81b29a;
   font-size: 20px;
   padding: 5px;
   margin-left: -10px;
   border-radius: 4px;
-  border: 1px ;
+  border: 1px;
   color: #f4f1de;
   transition: all .4s;
 }
+
 .btn_reg:hover {
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
+
 input {
   border-radius: 4px;
   border: 1px solid #000000;
@@ -164,10 +169,12 @@ input {
   height: 25px;
 
 }
+
 .input {
   margin-left: 18px;
   font-size: 20px;
 }
+
 select {
   font-size: 18px;
   width: 170px;
@@ -176,7 +183,8 @@ select {
   border-radius: 4px;
   height: 29px;
 }
+
 .error1 {
-  color: #ff0000 ;
+  color: #ff0000;
 }
 </style>

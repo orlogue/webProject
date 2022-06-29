@@ -1,13 +1,94 @@
-from django import template
+import requests
 from django.contrib import messages
+from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
+from rest_framework import generics, viewsets
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
-from .models import Category, Product, Order
+from .serializers import ProductSerializer, CategorySerializer, SubCategorySerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from cart.forms import CartAddProductForm
 
 from cart.cart import Cart
 # from .forms import OrderCreateForm
-from .models import OrderItem
+from .models import OrderItem, Product, Order, Category, SubCategory
+
+
+class LatestProductsList(viewsets.ReadOnlyModelViewSet):
+    queryset = Product.objects.order_by('-created')
+    serializer_class = ProductSerializer
+
+    def get_permissions(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+
+class ProductList(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Product.objects.filter(seller__building=self.request.user.building)\
+            .exclude(seller=self.request.user).order_by('-created')
+
+
+class ProductDetail(APIView):
+    def get_object(self, category_slug, product_slug):
+        try:
+            return Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
+        except Product.DoesNotExist:
+            raise Http404
+
+    def get(self, request, category_slug, product_slug, format=None):
+        product = self.get_object(category_slug, product_slug)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.order_by('slug')
+    serializer_class = CategorySerializer
+
+    def get_permissions(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+
+class SubCategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = SubCategorySerializer
+
+    def get_queryset(self):
+        category_pk = self.kwargs['pk']
+        return SubCategory.objects.filter(category__pk=category_pk)
+
+    def get_permissions(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
+
+#
+# class CategoriesList(APIView):
+#     def get(self, request):
+#         category = Category.objects.order_by('id')
+#         serializer = CategorySerializer(category, many=True)
+#         return Response(serializer.data)
+
+
+# class CategoriesList(generics.API):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
 
 
 def product_list(request, category_slug=None):
@@ -19,16 +100,14 @@ def product_list(request, category_slug=None):
         products = products.filter(category=category)
     cart_product_forms = []
     for product in products:
-        cart_product_forms.append(CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)]))
+        cart_product_forms.append(
+            CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)]))
     return render(request,
                   'profiles/homepage.html',
                   {'category': category,
                    'categories': categories,
                    'products': products,
-                   'cart_product_forms': cart_product_forms,})
-
-
-
+                   'cart_product_forms': cart_product_forms, })
 
 
 #
@@ -48,7 +127,7 @@ def product_list(request, category_slug=None):
 def product_detail(request, id, slug):
     product = get_object_or_404(Product,
                                 id=id,
-                                slug=slug,)
+                                slug=slug, )
     cart_product_form = CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)])
     return render(request, 'products/detail.html', {'product': product,
                                                     'cart_product_form': cart_product_form})

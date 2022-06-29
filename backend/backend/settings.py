@@ -16,7 +16,7 @@ from pathlib import Path
 # import django
 # django.setup()
 # from profiles.models import Profile
-
+# import rest_framework.authentication
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,14 +40,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'profiles.apps.ProfilesConfig',
     'products.apps.ProductsConfig',
-    'cart.apps.CartConfig'
+    'cart.apps.CartConfig',
+
+    'rest_framework',
+    'corsheaders',
+
+    'rest_framework.authtoken',
+    # 'allauth',
+    # # 'allauth.account',
+    # 'rest_auth',
+    'djoser',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,8 +146,90 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'profiles.Profile'
-LOGIN_REDIRECT_URL = 'homepage'
+DJOSER = {
+    'SERIALIZERS': {
+        'user': 'profiles.serializers.SpecialUserSerializer',
+        'current_user': 'profiles.serializers.SpecialUserSerializer',
+        # 'user_create': 'profiles.serializers.UserRegistrationSerializer',
+    },
+    # 'PERMISSIONS': {
+    #     'activation': ['rest_framework.permissions.AllowAny'],
+    #     'password_reset': ['rest_framework.permissions.AllowAny'],
+    #     'password_reset_confirm': ['rest_framework.permissions.AllowAny'],
+    #     # 'set_password': ['rest_framework.permissions.CurrentUserOrAdmin'],
+    #     'username_reset': ['rest_framework.permissions.AllowAny'],
+    #     'username_reset_confirm': ['rest_framework.permissions.AllowAny'],
+    #     # 'set_username': ['rest_framework.permissions.CurrentUserOrAdmin'],
+    #     'user_create': ['rest_framework.permissions.AllowAny'],
+    #     # 'user_delete': ['rest_framework.permissions.CurrentUserOrAdmin'],
+    #     # 'user': ['rest_framework.permissions.CurrentUserOrAdmin'],
+    #     # 'user_list': ['rest_framework.permissions.CurrentUserOrAdmin'],
+    #     'token_create': ['rest_framework.permissions.AllowAny'],
+    #     'token_destroy': ['rest_framework.permissions.IsAuthenticated'],
+    # }
+}
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+# LOGIN_REDIRECT_URL = 'homepage'
+#
 CART_SESSION_ID = 'cart'
-SESSION_COOKIE_AGE = 2592000
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+# SESSION_COOKIE_AGE = 86400
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         # 'rest_framework.authentication.BasicAuthentication',
+#         # 'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.TokenAuthentication',
+#         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+#
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#         # 'rest_framework.permissions.IsAuthenticated',
+#         # 'rest_framework.permissions.IsAdminUser'
+#         'rest_framework.permissions.AllowAny',
+#     ],
+#
+#     'TEST_REQUEST_RENDERER_CLASSES': [
+#         'rest_framework.renderers.MultiPartRenderer',
+#         'rest_framework.renderers.JSONRenderer',
+#         'rest_framework.renderers.TemplateHTMLRenderer'
+#     ],
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.ScopedRateThrottle',
+    # ],
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'cars_app': '50/day',
+    #     'first_app': '4/day'
+    # }
+    # ,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 2
+
+# }
+# ACCOUNT_AUTHENTICATION_METHOD = 'phone_number'
+# ACCOUNT_PHONE_NUMBER_REQUIRED = True
+# ACCOUNT_UNIQUE_PHONE_NUMBER = True
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_USERNAME_REQUIRED = False
+#
+# REST_AUTH_REGISTER_SERIALIZERS = {
+#     'REGISTER_SERIALIZER': 'profiles.serializers.ProfileRegisterSerializer',
+# }
+#
+# ACCOUNT_ADAPTER = 'users.adapter.ProfileAccountAdapter'
+#
+# REST_AUTH_SERIALIZERS = {
+#     'USER_DETAILS_SERIALIZER': 'profiles.serializers.ProfileSerializer'
+# }

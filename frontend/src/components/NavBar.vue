@@ -1,74 +1,83 @@
 <template>
   <div class="navbar py-3 px-4">
-    <div class="logo"><strong>Рынок</strong></div>
-<!--    <div class="">-->
+    <div @click="isAuthenticated
+    ? this.$router.push({ name: 'Category'})
+    : this.$router.push('/')" class="logo"
+    >
+      <strong>FEFU market</strong>
+    </div>
+    <div class="">
+      <my-button
+          @click="showDialog"
+          class="entrance1"
+      ><img class="image4" src="@/static/4.png" alt="">
+      </my-button>
       <my-button
           @click="$router.push('/profile')"
           class="entrance"
       >Мой профиль
       </my-button>
       <my-button
-          @click="showDialog"
-          class="entrance1"
-      ><img  class="image4" src="@/static/4.png">
+          @click="logOut"
+          class="entrance"
+      >Выйти
       </my-button>
-<!--    </div>-->
+    </div>
   </div>
-  <router-view>
-  </router-view>
-  <my-window v-model:show="dialogVisible">
+  <my-window :show="dialogVisible">
   </my-window>
-
 </template>
 
 <script>
 import MyWindow from "@/components/UI/MyWindow";
 import MyButton from "@/components/UI/MyButton";
 import SecondButton from "@/components/UI/SecondButton";
+import axios from "axios";
+
 export default {
-  components: {MyButton, MyWindow, SecondButton},
-  data(){
+  components: { MyButton, MyWindow, SecondButton },
+  data() {
     return {
       dialogVisible: false,
+      isAuthenticated: this.$store.state.isAuthenticated
     }
   },
-  methods:{
-    showDialog(){
+  methods: {
+    showDialog() {
       this.dialogVisible = true;
+    },
+    async logOut() {
+      await axios
+          .post('/auth/token/logout/', localStorage.getItem('token'))
+          .then(() => {
+            this.$store.commit('removeToken')
+            localStorage.removeItem('token')
+            this.$router.push('/')
+          })
+          .catch(error => {
+            console.log(JSON.stringify(error))
+          })
     }
   }
 }
 </script>
 
 <style scoped>
+.logo {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo:active, :hover {
+  color: #0b182c;
+}
+
 .image4 {
   width: 30px;
-  margin-top: 10px;
 }
-/*.entrance1 {*/
-/*  margin-top: 90px;*/
-/*}*/
+
 .navbar {
   display: flex;
   flex-direction: row;
-}
-.menu {
-  margin-top: 100px;
-  margin-left: 20px;
-  width: auto;
-}
-.btn_menu1 {
-  font-size: 20px;
-  background-color: #f4f1de;
-  margin-right: 10px;
-  margin-left: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  border-radius: 5px;
-}
-.btn_menu2 {
-  font-size: 20px;
-  background-color: #f4f1de;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  border-radius: 5px;
 }
 </style>

@@ -1,4 +1,4 @@
-from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.db import models
@@ -30,13 +30,15 @@ class ProfileManager(BaseUserManager):
 class Profile(AbstractUser):
     username = None
     email = None
+    first_name = None
+    last_name = None
     phone_number = models.CharField(max_length=100, unique=True)
-    name = models.CharField(max_length=100)
-    building = models.ForeignKey('Building', on_delete=models.CASCADE, null=True)
-    room = models.SmallIntegerField(blank=False, default=0)
+    name = models.CharField(max_length=100, blank=False)
+    building = models.CharField(max_length=30, blank=False)
+    room = models.IntegerField(blank=False, default=0)
 
     USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['name', 'building', 'room']
 
     objects = ProfileManager()
 
