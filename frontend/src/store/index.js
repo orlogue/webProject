@@ -40,6 +40,15 @@ export default createStore({
             // state.cart.items[index].quantity = parseInt(quantity)
             localStorage.setItem('cart', JSON.stringify(state.cart))
         },
+        removeFromCart(state, product) {
+            state.cart.items = state.cart.items.filter(i => i.product.id !== product.id)
+            localStorage.setItem('cart', JSON.stringify(state.cart))
+        },
+        clearCart(state) {
+            state.cart = {items: []}
+
+            localStorage.setItem('cart', JSON.stringify(state.cart))
+        },
         setIsLoading(state, status) {
             state.isLoading = status
         },
@@ -50,11 +59,6 @@ export default createStore({
         removeToken(state) {
             state.token = ''
             state.isAuthenticated = false
-        },
-        clearCart(state) {
-            state.cart = {items: []}
-
-            localStorage.setItem('cart', JSON.stringify(state.cart))
         },
     },
     actions: {},

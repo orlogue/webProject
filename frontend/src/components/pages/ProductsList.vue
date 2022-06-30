@@ -28,7 +28,6 @@
                   <div class="card-title m-0">
                     <div>
                       <span class="fs-4 m-0">{{ product.name }}</span>
-                      <!--                      <span class="fs-4 m-0">ВРЕМЯ</span>-->
                     </div>
                   </div>
                   <div class="card-text">
@@ -38,7 +37,6 @@
                   <div class="mt-auto">
                     <p class="text">Продавец: {{ product.seller }}</p>
                     <p class="text">Корпус: {{ product.building }}</p>
-                    <!--                    <p class="text">Количество: {{ product.quantity }}</p>-->
                     <div class="d-flex align-items-center">
                       <p class="fs-2 m-0">{{ product.price }}₽</p>
                       <green-button
@@ -50,9 +48,10 @@
                       </green-button>
                       <button
                           v-else
+                          @click="removeFromCart(product)"
                           @click.stop
                           class="green-button-outline ms-auto"
-                      ><span class="text">В корзине</span>
+                      ><span class="text">Добавлен</span>
                       </button>
                     </div>
                   </div>
@@ -81,6 +80,7 @@ import axios from "axios";
 import {toast} from "bulma-toast";
 import GreenButton from "@/components/UI/GreenButton";
 import RedButton from "@/components/UI/RedButton";
+import CartMethods from "@/mixins/CartMethods";
 
 export default {
   name: 'ProductsList',
@@ -92,15 +92,11 @@ export default {
       userBuilding: "",
       chosenCategory: "0",
       sortProduct: "newFirst",
-      quantity: 1,
-      cart: {
-        items: [],
-      }
     }
   },
+  mixins: [CartMethods],
   mounted() {
     this.getLatestProducts()
-    this.cart = this.$store.state.cart
   },
   methods: {
     showDialog() {
@@ -128,29 +124,6 @@ export default {
             console.log(error)
           })
     },
-    addToCart(product) {
-      if (isNaN(this.quantity) || this.quantity < 1) {
-        this.quantity = 1
-      }
-      const item = {
-        product: product,
-        quantity: this.quantity
-      }
-      this.$store.commit('addToCart', item)
-      toast({
-        message: 'Товар был добавлен в корзину!',
-        type: 'is-success',
-        dismissible: false,
-        pauseOnHover: true,
-        duration: 2500,
-        position: 'bottom-right',
-        animate: 'Zoom In',
-      })
-    },
-    checkPresenceInCart(product) {
-      const exists = this.cart.items.filter(item => item.product.id === product.id)
-      return !exists.length
-    }
   },
   watch: {
     userBuilding(newValue, oldValue) {
@@ -217,12 +190,12 @@ export default {
 
 .text {
   font-size: 18px;
-  align-self: center;
   margin: 0;
 }
 
 .green-button-outline {
   display: flex;
+  align-items: center;
   max-height: 33px;
   border: 2px solid #81b29a;
   border-radius: 5px;
@@ -233,6 +206,7 @@ export default {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
+
 .green-button-outline:active {
   background-color: #81b29a;
 }

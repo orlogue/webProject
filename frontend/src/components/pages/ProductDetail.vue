@@ -19,16 +19,29 @@
               <div class="card-text">
                 <p class="text">Описание:
                   <span v-if="!product.description" class="text-muted">Пусто</span>
-                  <!--                  {{ product.description }}-->
+                  <span v-else>{{ product.description }}</span>
                 </p>
               </div>
               <div class="mt-auto">
                 <p class="text">Продавец: {{ product.seller }}</p>
                 <p class="text">Корпус: {{ product.building }}</p>
                 <p class="text">Количество: {{ product.quantity }}</p>
-                <div class="d-flex">
+                <div class="d-flex align-items-center">
                   <p class="fs-2 m-0">{{ product.price }}₽</p>
-                  <my-button class="ms-auto">В корзину</my-button>
+                  <green-button
+                      v-if="checkPresenceInCart(product)"
+                      @click="addToCart(product)"
+                      @click.stop
+                      class="ms-auto"
+                  ><span class="text">В корзину</span>
+                  </green-button>
+                  <button
+                      v-else
+                      @click="removeFromCart(product)"
+                      @click.stop
+                      class="green-button-outline ms-auto"
+                  ><span class="text">Добавлен</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -46,16 +59,19 @@ import NavBar from "@/components/NavBar";
 import MyFooter from '@/components/UI/MyFooter'
 import axios from "axios";
 import MyButton from "@/components/UI/MyButton";
+import CartMethods from "@/mixins/CartMethods";
+import GreenButton from "@/components/UI/GreenButton";
 
 export default {
   name: "ProductDetail",
-  components: {MyButton, NavBar, MyFooter},
+  components: {GreenButton, MyButton, NavBar, MyFooter},
   data() {
     return {
       product: Object,
       product_slug: this.$route.params.slug,
     }
   },
+  mixins: [CartMethods],
   mounted() {
     this.getProduct()
   },
@@ -73,11 +89,11 @@ export default {
   },
   watch: {
     '$route.params.slug': {
-        handler(newValue) {
-            this.product_slug = newValue
-            this.getProduct()
-        },
-        // immediate: true,
+      handler(newValue) {
+        this.product_slug = newValue
+        this.getProduct()
+      },
+      // immediate: true,
     }
   }
 }
@@ -122,5 +138,23 @@ export default {
 .text {
   font-size: 22px;
   margin: 0;
+}
+
+.green-button-outline {
+  display: flex;
+  min-height: 39px;
+  align-items: center;
+  border: 2px solid #81b29a;
+  border-radius: 5px;
+  background-color: #bddccc;
+  padding: 3px 10px;
+  transition: all .3s;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.green-button-outline:active {
+  background-color: #81b29a;
 }
 </style>
