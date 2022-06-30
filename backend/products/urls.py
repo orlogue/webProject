@@ -10,9 +10,11 @@ urlpatterns = [
     # path('products/<slug:category_slug>/<slug:product_slug>/', ProductDetail.as_view()),
     # path('products/<slug:category_slug>/<slug:product_slug>/', ProductDetail.as_view()),
     path('products/', ProductList.as_view()),
+    path('products/<slug:slug>', ProductDetail.as_view()),
     path('category/', CategoryViewSet.as_view({'get': 'list'})),
     path('category/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve'})),
-    path('category/<int:pk>/subcategory/', SubCategoryViewSet.as_view({'get': 'list'})),
+    # path('category/<int:pk>/subcategory/', SubCategoryViewSet.as_view({'get': 'list'})),
+    path('category/subcategory/', SubCategoryList.as_view()),
 
     # path('category/', SubCategoryViewSet.as_view()),
 

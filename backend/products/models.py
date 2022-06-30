@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
+# from django.utils.text import slugify
+from pytils.translit import slugify
 from .utils import rand_slug
 from profiles.models import Profile
 

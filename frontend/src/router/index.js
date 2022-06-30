@@ -1,10 +1,11 @@
 import GeneralPage from "@/components/pages/GeneralPage";
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
-import MyProduct from "@/components/pages/MyProduct";
-import MyCategory from "@/components/pages/MyCategory";
+import ProductsList from "@/components/pages/ProductsList";
+import CategoriesList from "@/components/pages/CategoriesList";
 import MyProfile from "@/components/pages/MyProfile";
 import NotFound from "@/components/pages/404";
+import ProductDetail from "@/components/pages/ProductDetail";
 
 const routes = [
     {
@@ -14,12 +15,17 @@ const routes = [
     },
     {
         path: '/products',
-        component: MyProduct,
+        component: ProductsList,
         name: 'Products'
     },
     {
+        path: '/products/:slug',
+        component: ProductDetail,
+        name: 'ProductDetail'
+    },
+    {
         path: '/category',
-        component: MyCategory,
+        component: CategoriesList,
         name: 'Category',
         // beforeEnter: (to, from, next) => {
         //     if (localStorage.getItem('token')) {
@@ -31,11 +37,11 @@ const routes = [
     },
     {
         path: '/category/:slug/',
-        component: () => import('@/components/pages/MyCategory')
+        component: () => import('@/components/pages/CategoriesList')
     },
     {
         path: '/category/:slug1/:slug2/',
-        component: () => import('@/components/pages/MyCategory')
+        component: () => import('@/components/pages/CategoriesList')
     },
     {
         path: '/profile',
@@ -55,12 +61,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    // let cartDialog = document.querySelector('#cart')
+    // if (cartDialog) {
+    //     cartDialog.remove()
+    // }
     if (localStorage.getItem('token')) {
         next()
     } else if (to.path === '/') {
         next()
     } else {
-        next({ name: 'Home' })
+        next({name: 'Home'})
     }
 })
 

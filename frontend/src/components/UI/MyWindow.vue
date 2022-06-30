@@ -1,5 +1,6 @@
 <template>
-  <div class="dialog " v-if="show">
+  <div id="cart" class="dialog" v-if="show" @click="closeWindow"
+>
     <div @click.stop class="dialog__content d-flex flex-column">
       <button
           class="btn_close"
@@ -9,7 +10,6 @@
       </button>
       <slot></slot>
     </div>
-
   </div>
 </template>
 
@@ -23,7 +23,12 @@ export default {
   },
   methods: {
     closeWindow() {
-      this.$emit('update:show', false)
+      this.$emit('updateShow', false)
+    }
+  },
+  watch: {
+    $route() {
+      this.closeWindow()
     }
   }
 }

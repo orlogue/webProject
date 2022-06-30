@@ -31,24 +31,36 @@ class LatestProductsList(viewsets.ReadOnlyModelViewSet):
 
 class ProductList(generics.ListAPIView):
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return Product.objects.filter(seller__building=self.request.user.building)\
-            .exclude(seller=self.request.user).order_by('-created')
+        building = self.request.query_params.get('building', None)
+        category = self.request.query_params.get('category', None)
+        sort = self.request.query_params.get('sort', 'newFirst')
+        dic = {'newFirst': '-created',
+               'oldFirst': 'created',
+               'cheapFirst': 'price',
+               'expensiveFirst': '-price'}
+        if building == 'all' and category == '0':
+            return Product.objects.exclude(seller=self.request.user).order_by(dic[sort])
+        elif building == 'all':
+            return Product.objects.filter(category__pk=category) \
+                .exclude(seller=self.request.user) \
+                .order_by(dic[sort])
+        elif category == '0':
+            return Product.objects.filter(seller__building=building) \
+                .exclude(seller=self.request.user) \
+                .order_by(dic[sort])
+        return Product.objects \
+            .filter(Q(seller__building=building) & Q(category__pk=category)) \
+            .exclude(seller=self.request.user) \
+            .order_by(dic[sort])
 
 
-class ProductDetail(APIView):
-    def get_object(self, category_slug, product_slug):
-        try:
-            return Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
-        except Product.DoesNotExist:
-            raise Http404
-
-    def get(self, request, category_slug, product_slug, format=None):
-        product = self.get_object(category_slug, product_slug)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
+class ProductDetail(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'slug'
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -63,19 +75,28 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
         return [permission() for permission in permission_classes]
 
 
-class SubCategoryViewSet(viewsets.ReadOnlyModelViewSet):
+# class SubCategoryViewSet(viewsets.ReadOnlyModelViewSet):
+#     serializer_class = SubCategorySerializer
+#
+#     def get_queryset(self):
+#         category_pk = self.kwargs['pk']
+#         return SubCategory.objects.filter(category__pk=category_pk)
+#
+#     def get_permissions(self):
+#         if self.action == 'list' or self.action == 'retrieve':
+#             permission_classes = [AllowAny]
+#         else:
+#             permission_classes = [IsAdminUser]
+#         return [permission() for permission in permission_classes]
+
+class SubCategoryList(generics.ListAPIView):
+    queryset = SubCategory.objects.all()
     serializer_class = SubCategorySerializer
+    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        category_pk = self.kwargs['pk']
-        return SubCategory.objects.filter(category__pk=category_pk)
-
-    def get_permissions(self):
-        if self.action == 'list' or self.action == 'retrieve':
-            permission_classes = [AllowAny]
-        else:
-            permission_classes = [IsAdminUser]
-        return [permission() for permission in permission_classes]
+    # def get_queryset(self):
+    #     category_pk = self.kwargs['pk']
+    #     return SubCategory.objects.filter(category__pk=category_pk)
 
 
 #

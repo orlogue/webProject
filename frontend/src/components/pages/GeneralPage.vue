@@ -38,10 +38,10 @@
     ©2022
   </div>
 
-  <my-window v-model:show="dialogVisible">
+  <my-window :show="dialogVisible">
     <au-form></au-form>
   </my-window>
-  <my-window v-model:show="dialogVisible1">
+  <my-window :show="dialogVisible1">
     <re-form></re-form>
   </my-window>
 

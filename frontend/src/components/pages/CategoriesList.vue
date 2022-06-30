@@ -10,10 +10,10 @@
              @click="getSubcategories(category)"
         >
           {{ category.name }}
-<!--          require(`@/static/${category.slug}.png`) || -->
-                    <img class="ic1"
-                         :src="require('@/static/default.jpg')" :alt="category.slug"
-                    >
+          <!--          require(`@/static/${category.slug}.png`) || -->
+          <img class="ic1"
+               :src="require('@/static/default.jpg')" :alt="category.slug"
+          >
           <router-link :to="{ name: 'Category', params: { slug: category.slug }}"
           ></router-link>
         </div>
@@ -31,7 +31,7 @@ import ProductsSidebar from "@/components/UI/ProductsSidebar";
 import axios from 'axios'
 
 export default {
-  components: { NavBar, MyFooter, SecondButton, ProductsSidebar },
+  components: {NavBar, MyFooter, SecondButton, ProductsSidebar},
   data() {
     return {
       categories: [],

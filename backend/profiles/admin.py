@@ -11,7 +11,7 @@ class ProfileAdmin(UserAdmin):
     list_display = ('phone_number', 'name', 'building', 'room', 'is_staff', 'is_active',)
     list_filter = ('phone_number', 'building', 'is_staff', 'is_active',)
     fieldsets = (
-        (None, {'fields': ('phone_number', 'password')}),
+        (None, {'fields': ('phone_number', 'password', 'building', 'room')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
     # add_fieldsets = (
@@ -20,6 +20,7 @@ class ProfileAdmin(UserAdmin):
     #         'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
     #     ),
     # )
+    # list_editable = ('phone_number', 'name', 'building', 'room')
     search_fields = ('phone_number', 'name')
     ordering = ('phone_number', 'name')
 

@@ -6,6 +6,7 @@ from .models import Product, Category, SubCategory
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.name')
     seller = serializers.CharField(source='seller.name')
+    building = serializers.CharField(source='seller.building')
 
     class Meta:
         model = Product
@@ -22,7 +23,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
+    # category = CategorySerializer(read_only=True)
 
     class Meta:
         model = SubCategory

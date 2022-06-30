@@ -9,35 +9,53 @@
       </second-button>
       <second-button
           class="btn_menu2"
-          @click="$router.push({ name: 'Products'})"
+          @click="goToProducts"
       >
         Все товары
       </second-button>
     </div>
     <div class="filter mt-2">
-      <div class="filter-title mb-2">
+      <div class="filter-title">
         Фильтрация
       </div>
-      <div class="d-flex mb-2">
-        <span class="fs-5 me-2">Корпус</span>
-        <custom-select>
-          <option selected>{{ this.userBuilding }}</option>
-          <option v-for="building in buildings"
-                  :key="building.id">
-            {{ building.name }}
-          </option>
-          <option>Все</option>
-        </custom-select>
-      </div>
-      <div class="d-flex">
-        <span class="fs-5 me-2">Категория</span>
-        <custom-select>
-          <option selected>Все</option>
-          <option v-for="category in categories"
-                  :key="category.id">
-            {{ category.name }}
-          </option>
-        </custom-select>
+      <div class="filter-body">
+        <div class="filter-item">
+          <span class="me-2">Корпус</span>
+          <custom-select @change="changeBuilding"
+          >
+<!--            <option selected :value="userBuilding">{{ translate() }}</option>-->
+            <option
+                v-for="building in buildings"
+                :key="building.id"
+                :value="building.name"
+                :selected="building.name === translate()"
+            >
+              {{ building.name }}
+            </option>
+            <option value="all">Все</option>
+          </custom-select>
+        </div>
+        <div class="filter-item">
+          <span class="me-2">Категория</span>
+          <custom-select @change="chooseCategory">
+            <option value="0" selected>Все</option>
+            <option v-for="category in categories"
+                    :key="category.id"
+                    :value="category.id"
+            >
+              {{ category.name }}
+            </option>
+          </custom-select>
+        </div>
+        <div class="filter-item">
+          <span class="me-2">Cначала</span>
+          <custom-select @change="sort">
+            <option value="newFirst" selected>Новые</option>
+            <option value="oldFirst">Старые</option>
+            <option value="cheapFirst">Дешёвые</option>
+            <option value="expensiveFirst">Дорогие</option>
+          </custom-select>
+        </div>
       </div>
     </div>
 
@@ -55,17 +73,16 @@ export default {
     return {
       buildings: [],
       categories: [],
-      userBuilding: Object,
     }
   },
   mounted() {
     this.getBuildings()
-    this.getUserBuilding()
     this.getCategories()
   },
   components: {
     SecondButton, CustomSelect,
   },
+  props: ['userBuilding', 'chosenCategory', 'sortProduct'],
   methods: {
     async getBuildings() {
       await axios
@@ -77,19 +94,9 @@ export default {
             console.log(error)
           })
     },
-    async getUserBuilding() {
-      await axios
-          .get('api/users/me/')
-          .then(response => {
-            this.userBuilding = response.data['building']
-          })
-          .catch(error => {
-            console.log(error)
-          })
-    },
     async getCategories() {
       await axios
-          .get('/api/category/')
+          .get('/api/category/subcategory/')
           .then(response => {
             this.categories = response.data
           })
@@ -97,6 +104,25 @@ export default {
             console.log(error)
           })
     },
+    changeBuilding(e) {
+      this.$emit('userBuildingChange', e.target.value)
+    },
+    chooseCategory(e) {
+      this.$emit('chooseCategory', e.target.value)
+    },
+    sort(e) {
+      this.$emit('sortProducts', e.target.value)
+    },
+    translate() {
+      if (this.userBuilding === 'all')
+        return 'Всe'
+      else
+        return this.userBuilding
+    },
+    goToProducts() {
+      this.$router.push({name: 'Products'})
+
+    }
   }
 }
 
@@ -120,15 +146,33 @@ export default {
 
 .filter {
   max-width: 243px;
+  background-color: #f4f1de;;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
 .filter-title {
-  display: inline-block;
   margin: 0;
-  border-radius: 5px;
   width: 100%;
-  background-color: #E07A5F;
-  padding: 10px;
+  font-size: 20px;
+  padding: 5px 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #ea866b;
+}
+
+.filter-body {
+  padding: 15px 10px;
+}
+
+.filter-item {
+  display: flex;
+  font-size: 18px;
+  margin-bottom: 1em;
+}
+
+.filter-item:last-child {
+  margin-bottom: 0;
 }
 
 .sidebar {

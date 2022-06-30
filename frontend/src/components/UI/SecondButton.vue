@@ -16,7 +16,7 @@ export default {}
 }
 
 .btns1:hover {
-  color: #E07A5F;
+  color: #b94d31;
 }
 
 </style>

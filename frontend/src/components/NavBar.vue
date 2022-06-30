@@ -1,8 +1,8 @@
 <template>
   <div class="navbar py-3 px-4">
     <div @click="isAuthenticated
-    ? this.$router.push({ name: 'Category'})
-    : this.$router.push('/')" class="logo"
+    ? this.$router.push({ name: 'Products'})
+    : this.$router.push({ name: 'Home' })" class="logo"
     >
       <strong>FEFU market</strong>
     </div>
@@ -11,6 +11,7 @@
           @click="showDialog"
           class="entrance1"
       ><img class="image4" src="@/static/4.png" alt="">
+        {{ $root.cartTotalLength }}
       </my-button>
       <my-button
           @click="$router.push('/profile')"
@@ -24,7 +25,10 @@
       </my-button>
     </div>
   </div>
-  <my-window :show="dialogVisible">
+  <my-window :show="dialogVisible"
+             @updateShow="closeDialog($event)"
+  >
+    <cart-dialog></cart-dialog>
   </my-window>
 </template>
 
@@ -32,10 +36,11 @@
 import MyWindow from "@/components/UI/MyWindow";
 import MyButton from "@/components/UI/MyButton";
 import SecondButton from "@/components/UI/SecondButton";
+import CartDialog from "@/components/CartDialog";
 import axios from "axios";
 
 export default {
-  components: { MyButton, MyWindow, SecondButton },
+  components: {MyButton, MyWindow, SecondButton, CartDialog},
   data() {
     return {
       dialogVisible: false,
@@ -45,6 +50,11 @@ export default {
   methods: {
     showDialog() {
       this.dialogVisible = true;
+      document.querySelector('body').style.overflow = 'hidden';
+    },
+    closeDialog(bool) {
+      this.dialogVisible = bool;
+      document.querySelector('body').removeAttribute('style')
     },
     async logOut() {
       await axios
@@ -57,8 +67,8 @@ export default {
           .catch(error => {
             console.log(JSON.stringify(error))
           })
-    }
-  }
+    },
+  },
 }
 </script>
 
