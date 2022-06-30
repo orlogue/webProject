@@ -44,7 +44,7 @@
                   </option>
                 </select>
               </div>
-              <p class="text">Цена: {{ getItemTotal(item) }}</p>
+              <p class="text">Цена: {{ getItemTotal(item) }}₽</p>
             </div>
             <div class="col-3">
             </div>
@@ -53,7 +53,7 @@
       </div>
       <div class="d-flex align-items-center">
         <div class="ms-auto fs-4">
-          Итого: {{ this.getTotalSum }}
+          Итого: {{ this.getTotalSum }}₽
         </div>
         <green-button class="ms-3 fs-5">
           Оформить заказ

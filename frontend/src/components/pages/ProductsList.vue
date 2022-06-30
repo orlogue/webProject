@@ -3,21 +3,23 @@
   <div class="container">
     <div class="row">
       <products-sidebar
-          :user-building="userBuilding"
-          @userBuildingChange="userBuilding = $event"
-          :chosen-category="chosenCategory"
-          @chooseCategory="chosenCategory = $event"
-          :sort-product="sortProduct"
-          @sortProducts="sortProduct = $event"
+          :building="this.filters.building"
+          @buildingChange="this.filters.building = $event"
+          :chosen-category="this.filters.chosenCategory"
+          @chooseCategory="this.filters.chosenCategory = $event"
+          :sort-product="this.filters.sortProduct"
+          @sortProducts="this.filters.sortProduct = $event"
+          @removeFilters="removeFilters"
       ></products-sidebar>
-      <div class="row row-cols-2 col-9 flex-fill">
+      <div class="row ms-4 row-cols-2 col-9 flex-fill">
         <div
             class="col"
             v-for="product in latestProducts"
             v-bind:key="product.id"
-            @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"
         >
-          <div class="card mb-4">
+          <div class="card mb-4"
+               @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"
+          >
             <div class="row g-0">
               <div class="col-5 img-parent">
                 <img class="img" v-if="product.image" :src="product.image" alt="">
@@ -59,7 +61,6 @@
               </div>
             </div>
           </div>
-          <!--          <router-link v-bind:to="product.get_absolute_url" class="button is-light mt-4">Подробнее</router-link>-->
         </div>
         <div v-if="!latestProducts.length" class="fs-4">
           Пока что здесь пусто :( <br>
@@ -77,7 +78,6 @@ import MyFooter from "@/components/UI/MyFooter";
 import NavBar from "@/components/NavBar";
 import ProductsSidebar from "@/components/UI/ProductsSidebar";
 import axios from "axios";
-import {toast} from "bulma-toast";
 import GreenButton from "@/components/UI/GreenButton";
 import RedButton from "@/components/UI/RedButton";
 import CartMethods from "@/mixins/CartMethods";
@@ -89,34 +89,43 @@ export default {
     return {
       dialogVisible: false,
       latestProducts: [],
-      userBuilding: "",
-      chosenCategory: "0",
-      sortProduct: "newFirst",
+      filters: {
+        building: "",
+        chosenCategory: "0",
+        sortProduct: "newFirst",
+      }
     }
   },
   mixins: [CartMethods],
   mounted() {
-    this.getLatestProducts()
+    this.getLatestProducts();
+    if (localStorage.getItem('filters')) {
+      this.filters = JSON.parse(localStorage.getItem('filters'))
+    } else {
+      localStorage.setItem('filters', JSON.stringify(this.filters))
+    }
   },
   methods: {
     showDialog() {
       this.dialogVisible = true;
     },
     async getLatestProducts() {
-      if (this.userBuilding === "") {
+      if (localStorage.getItem('filters'))
+        this.filters = JSON.parse(localStorage.getItem('filters'))
+      if (this.filters.building === "") {
         await axios
             .get('api/users/me/')
             .then(response => {
-              this.userBuilding = response.data['building']
+              this.filters.building = response.data['building']
             })
             .catch(error => {
               console.log(error)
             })
       }
       await axios
-          .get(`/api/products/?building=${this.userBuilding
-          }&category=${this.chosenCategory
-          }&sort=${this.sortProduct}`)
+          .get(`/api/products/?building=${this.filters.building
+          }&category=${this.filters.chosenCategory
+          }&sort=${this.filters.sortProduct}`)
           .then(response => {
             this.latestProducts = response.data
           })
@@ -124,17 +133,27 @@ export default {
             console.log(error)
           })
     },
+    removeFilters() {
+      this.filters = {
+        building: '',
+        chosenCategory: '0',
+        sortProduct: 'newFirst',
+      }
+    }
   },
   watch: {
-    userBuilding(newValue, oldValue) {
+    'filters.building'() {
+      localStorage.setItem('filters', JSON.stringify(this.filters))
       this.getLatestProducts()
     },
-    chosenCategory(newValue, oldValue) {
+    'filters.chosenCategory'() {
+      localStorage.setItem('filters', JSON.stringify(this.filters))
       this.getLatestProducts()
     },
-    sortProduct(newValue, oldValue) {
+    'filters.sortProduct'() {
+      localStorage.setItem('filters', JSON.stringify(this.filters))
       this.getLatestProducts()
-    }
+    },
   },
   computed: {
     truncate() {

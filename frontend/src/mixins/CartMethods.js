@@ -39,7 +39,7 @@ export default {
                 type: 'is-success',
                 dismissible: false,
                 pauseOnHover: true,
-                duration: 2500,
+                duration: 2000,
                 position: 'bottom-right',
             })
         }

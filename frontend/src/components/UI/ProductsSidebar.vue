@@ -1,14 +1,14 @@
 <template>
   <div class="sidebar col-md-3 col-sm-2">
-    <div>
+    <div class="d-flex">
       <second-button
-          class="btn_menu1 me-2 mb-2"
+          class="btn_menu1 mb-2"
           @click="$router.push({ name: 'Category' })"
       >
         Категории
       </second-button>
       <second-button
-          class="btn_menu2"
+          class="btn_menu2 ms-auto mb-2"
           @click="goToProducts"
       >
         Все товары
@@ -23,7 +23,6 @@
           <span class="me-2">Корпус</span>
           <custom-select @change="changeBuilding"
           >
-<!--            <option selected :value="userBuilding">{{ translate() }}</option>-->
             <option
                 v-for="building in buildings"
                 :key="building.id"
@@ -38,10 +37,11 @@
         <div class="filter-item">
           <span class="me-2">Категория</span>
           <custom-select @change="chooseCategory">
-            <option value="0" selected>Все</option>
+            <option value="0" :selected="chosenCategory === '0'">Все</option>
             <option v-for="category in categories"
                     :key="category.id"
                     :value="category.id"
+                    :selected="category.id === +chosenCategory"
             >
               {{ category.name }}
             </option>
@@ -50,15 +50,20 @@
         <div class="filter-item">
           <span class="me-2">Cначала</span>
           <custom-select @change="sort">
-            <option value="newFirst" selected>Новые</option>
-            <option value="oldFirst">Старые</option>
-            <option value="cheapFirst">Дешёвые</option>
-            <option value="expensiveFirst">Дорогие</option>
+            <option value="newFirst" :selected="sortProduct === 'newFirst'">Новые</option>
+            <option value="oldFirst" :selected="sortProduct === 'oldFirst'">Старые</option>
+            <option value="cheapFirst" :selected="sortProduct === 'cheapFirst'">Дешёвые</option>
+            <option value="expensiveFirst" :selected="sortProduct === 'expensiveFirst'">Дорогие</option>
           </custom-select>
         </div>
       </div>
     </div>
-
+    <button
+        class="discard-filters btn_menu1 mt-3"
+        @click="removeFilters"
+    >
+      Сбросить фильтры
+    </button>
   </div>
 </template>
 
@@ -66,6 +71,7 @@
 import SecondButton from "@/components/UI/SecondButton";
 import CustomSelect from "@/components/UI/CustomSelect";
 import axios from "axios";
+import MyButton from "@/components/UI/MyButton";
 
 export default {
   name: "ProductsSidebar",
@@ -80,9 +86,10 @@ export default {
     this.getCategories()
   },
   components: {
+    MyButton,
     SecondButton, CustomSelect,
   },
-  props: ['userBuilding', 'chosenCategory', 'sortProduct'],
+  props: ['building', 'chosenCategory', 'sortProduct'],
   methods: {
     async getBuildings() {
       await axios
@@ -105,7 +112,7 @@ export default {
           })
     },
     changeBuilding(e) {
-      this.$emit('userBuildingChange', e.target.value)
+      this.$emit('buildingChange', e.target.value)
     },
     chooseCategory(e) {
       this.$emit('chooseCategory', e.target.value)
@@ -114,14 +121,19 @@ export default {
       this.$emit('sortProducts', e.target.value)
     },
     translate() {
-      if (this.userBuilding === 'all')
+      if (this.building === 'all')
         return 'Всe'
       else
-        return this.userBuilding
+        return this.building
     },
     goToProducts() {
       this.$router.push({name: 'Products'})
-
+    },
+    removeFilters() {
+      this.$emit('removeFilters')
+      // if (localStorage.getItem('filters')) {
+      //   localStorage.removeItem('filters')
+      // }
     }
   }
 }
@@ -145,7 +157,7 @@ export default {
 }
 
 .filter {
-  max-width: 243px;
+  /*max-width: 243px;*/
   background-color: #f4f1de;;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -178,5 +190,9 @@ export default {
 .sidebar {
   display: flex;
   flex-direction: column;
+  max-width: 275px;
+}
+
+.discard-filters {
 }
 </style>
