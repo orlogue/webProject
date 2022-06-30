@@ -101,7 +101,7 @@ export default {
 
 <style scoped>
 .card {
-  background-color: #f4f1de !important;
+  background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   min-height: 400px;

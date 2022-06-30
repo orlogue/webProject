@@ -1,101 +1,89 @@
 <template>
   <div class="registration">
-    <div class="">
-      <div class="">
-        <h1 class="">Регистрация</h1>
-
-        <form @submit.prevent="submitForm">
-          <div class="input">
-            <div class="">
-              <label>Номер телефона</label>
-              <div class="">
-                <input type="text" class="" v-model="phone_number">
-              </div>
-            </div>
-
-            <div class="">
-              <label>Имя</label>
-              <div class="">
-                <input type="text" class="" v-model="name">
-              </div>
-            </div>
-
-            <div class="">
-              <label>Корпус</label>
-              <div class="">
-                <select class="build" v-model="building">
-                  <option></option>
-                  <option>7.2</option>
-                  <option>6.2</option>
-                  <option>6.1</option>
-                  <option>8.2</option>
-                  <option>7.1</option>
-                  <option>8.1</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="">
-              <label>Комната</label>
-              <div class="">
-                <input type="text" class="" v-model="room">
-              </div>
-            </div>
-
-            <div class="">
-              <label>Пароль</label>
-              <div class="">
-                <input type="password" class="" v-model="password">
-              </div>
-            </div>
-
-            <div class="">
-              <label>Повторите пароль</label>
-              <div class="">
-                <input type="password" class="" v-model="password2">
-              </div>
-            </div>
-
-            <div class="error1" v-if="errors.length">
-              <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-            </div>
-
-            <div class="">
-              <div class="">
-                <br>
-                <button class="btn_reg">Зарегистрироваться</button>
-              </div>
-            </div>
-          </div>
-        </form>
-
+    <h1 class="mb-4 text-center">Регистрация</h1>
+    <form class="d-flex flex-column justify-content-center" @submit.prevent="submitForm">
+      <div class="fs-5 mb-2">
+        <label>Номер телефона</label>
+        <div class="flex-fill">
+          <input type="text" class="form-input-reg" v-model="phone_number">
+        </div>
       </div>
-    </div>
+      <div class="fs-5 mb-2">
+        <label>Имя</label>
+        <div class="flex-fill">
+          <input type="text" class="form-input-reg" v-model="name">
+        </div>
+      </div>
+      <div class="fs-5 mb-2">
+        <label>Корпус</label>
+        <div class="flex-fill">
+          <select class="building" @change="setBuilding($event)">
+            <option selected disabled>Выберите корпус</option>
+            <option v-for="building in buildings"
+                    :key="building.id"
+                    :value="building.name"
+            >{{ building.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="fs-5 mb-2">
+        <label>Комната</label>
+        <div class="flex-fill">
+          <input type="text" class="form-input-reg" v-model="room">
+        </div>
+      </div>
+      <div class="fs-5 mb-2">
+        <label>Пароль</label>
+        <div class="flex-fill">
+          <input type="password" class="form-input-reg" v-model="password">
+        </div>
+      </div>
+
+      <div class="fs-5 mb-2">
+        <label>Подтверждение</label>
+        <div class="">
+          <input type="password" class="form-input-reg" v-model="password2">
+        </div>
+      </div>
+      <p class="error mb-0" v-if="error">{{ error }}</p>
+      <button class="btn_aut mt-4">Зарегистрироваться</button>
+    </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import API from "@/mixins/API";
 
 export default {
 
   name: 'SignUp',
   data() {
     return {
+      buildings: [],
       phone_number: '',
       name: '',
       building: '',
       room: '',
       password: '',
       password2: '',
-      errors: []
+      error: ''
     }
   },
+  mixins: [API],
+  mounted() {
+    this.getBuildings()
+  },
   methods: {
+    setBuilding(e) {
+      this.building = e.target.value
+    },
     async submitForm() {
       this.errors = []
       if (this.phone_number === '' || this.name === '' || this.building === '' || this.room === '' || this.password === '') {
-        this.errors.push('Введите все данные')
+        this.error = 'Введите все данные!'
+        return 0;
       }
 
       if (!this.errors.length) {
@@ -107,19 +95,12 @@ export default {
           password: this.password
         }
         await axios
-            .post("/api/v1/users/", formData)
+            .post("/api/users/", formData)
             .then(response => {
             })
             .catch(error => {
               if (error.response) {
-                for (const property in error.response.data) {
-                  this.errors.push(`${property}: ${error.response.data[property]}`)
-                }
-                console.log(JSON.stringify(error.response.data))
-              } else if (error.message) {
-                this.errors.push('Something went wrong. Please try again')
-
-                console.log(JSON.stringify(error))
+                this.error = ('Что-то пошло не так.\nПопробуйте снова!')
               }
             })
         await axios
@@ -141,10 +122,22 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .registration {
-  margin: 20px 50px 50px 50px;
+  max-width: 256px;
+  margin: 10px 40px;
   padding: 0;
+}
+
+.building {
+  height: 30px;
+  border-style: none;
+  align-self: flex-end;
+  width: 100%;
+  padding: 0 6px;
+  margin: 0 0 10px 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
 }
 
 .btn_reg {
@@ -162,17 +155,11 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-input {
-  border-radius: 4px;
-  border: 1px solid #000000;
+.form-input-reg {
+  width: 100%;
+  border-radius: 8px;
   margin-bottom: 10px;
-  height: 25px;
-
-}
-
-.input {
-  margin-left: 18px;
-  font-size: 20px;
+  height: 30px;
 }
 
 select {
@@ -182,9 +169,5 @@ select {
 
   border-radius: 4px;
   height: 29px;
-}
-
-.error1 {
-  color: #ff0000;
 }
 </style>

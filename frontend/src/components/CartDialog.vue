@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center mb-2">
         <div class="ms-auto fs-4">
           Итого: {{ this.getTotalSum }}₽
         </div>
@@ -88,7 +88,6 @@ export default {
   },
   mounted() {
     this.cart = this.$store.state.cart;
-    document.querySelector('#cart').op
   },
   methods: {
     changeQuantity(e, item) {

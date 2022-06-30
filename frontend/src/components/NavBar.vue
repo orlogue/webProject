@@ -9,24 +9,24 @@
     <div class="">
       <my-button
           @click="showDialog"
-          class="entrance1"
+          class="nav-button"
       ><img class="image4" src="@/static/4.png" alt="">
         {{ $root.cartTotalLength }}
       </my-button>
       <my-button
           @click="$router.push('/profile')"
-          class="entrance"
+          class="nav-button"
       >Мой профиль
       </my-button>
       <my-button
           @click="logOut"
-          class="entrance"
+          class="nav-button"
       >Выйти
       </my-button>
     </div>
   </div>
   <my-window :show="dialogVisible"
-             @updateShow="closeDialog($event)"
+             @updateShow="closeDialog"
   >
     <cart-dialog></cart-dialog>
   </my-window>
@@ -52,8 +52,8 @@ export default {
       this.dialogVisible = true;
       document.querySelector('body').style.overflow = 'hidden';
     },
-    closeDialog(bool) {
-      this.dialogVisible = bool;
+    closeDialog() {
+      this.dialogVisible = false;
       document.querySelector('body').removeAttribute('style')
     },
     async logOut() {
@@ -61,7 +61,9 @@ export default {
           .post('/auth/token/logout/', localStorage.getItem('token'))
           .then(() => {
             this.$store.commit('removeToken')
+            this.$store.commit('clearCart')
             localStorage.removeItem('token')
+            localStorage.removeItem('filters')
             this.$router.push('/')
           })
           .catch(error => {

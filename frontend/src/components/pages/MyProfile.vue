@@ -86,5 +86,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.card {
+  /*max-width: 243px;*/
+  background-color: #f1f0e8;;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
 </style>

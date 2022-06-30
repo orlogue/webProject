@@ -3,6 +3,9 @@
 </template>
 
 <script>
+export default {
+  name: 'Footer'
+}
 
 </script>
 
@@ -10,7 +13,7 @@
 footer {
   background: #81b29a;
   text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 </style>

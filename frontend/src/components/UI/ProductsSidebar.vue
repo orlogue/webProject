@@ -2,13 +2,13 @@
   <div class="sidebar col-md-3 col-sm-2">
     <div class="d-flex">
       <second-button
-          class="btn_menu1 mb-2"
+          class="btn_menu mb-2"
           @click="$router.push({ name: 'Category' })"
       >
         Категории
       </second-button>
       <second-button
-          class="btn_menu2 ms-auto mb-2"
+          class="btn_menu ms-auto mb-2"
           @click="goToProducts"
       >
         Все товары
@@ -59,7 +59,7 @@
       </div>
     </div>
     <button
-        class="discard-filters btn_menu1 mt-3"
+        class="discard-filters btn_menu mt-3"
         @click="removeFilters"
     >
       Сбросить фильтры
@@ -70,8 +70,8 @@
 <script>
 import SecondButton from "@/components/UI/SecondButton";
 import CustomSelect from "@/components/UI/CustomSelect";
-import axios from "axios";
 import MyButton from "@/components/UI/MyButton";
+import API from "@/mixins/API";
 
 export default {
   name: "ProductsSidebar",
@@ -81,6 +81,7 @@ export default {
       categories: [],
     }
   },
+  mixins: [API],
   mounted() {
     this.getBuildings()
     this.getCategories()
@@ -91,26 +92,6 @@ export default {
   },
   props: ['building', 'chosenCategory', 'sortProduct'],
   methods: {
-    async getBuildings() {
-      await axios
-          .get('api/buildings/')
-          .then(response => {
-            this.buildings = response.data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-    },
-    async getCategories() {
-      await axios
-          .get('/api/category/subcategory/')
-          .then(response => {
-            this.categories = response.data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-    },
     changeBuilding(e) {
       this.$emit('buildingChange', e.target.value)
     },
@@ -141,24 +122,17 @@ export default {
 </script>
 
 <style scoped>
-.btn_menu1 {
-  margin: 0;
+.btn_menu {
   font-size: 20px;
-  background-color: #f4f1de;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-}
-
-.btn_menu2 {
-  font-size: 20px;
-  background-color: #f4f1de;
+  background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
 
 .filter {
   /*max-width: 243px;*/
-  background-color: #f4f1de;;
+  /*background-color: #f4f1de;*/
+  background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }

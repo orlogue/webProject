@@ -1,50 +1,56 @@
 <template>
   <div class="navbar py-3 px-4">
     <div class="logo"><strong>FEFU market</strong></div>
-    <div class="">
+    <div>
       <my-button
           v-if="!this.$store.state.isAuthenticated"
-          class="entrance"
+          class="nav-button"
           @click="showDialog"
       >Войти
       </my-button>
       <my-button
           v-if="!this.$store.state.isAuthenticated"
-          class="entrance1"
+          class="nav-button"
           @click="showDialog1"
       >Регистрация
       </my-button>
       <my-button
           v-else
-          class="entrance1"
-          @click="this.$router.push('/category')"
+          class="nav-button"
+          @click="this.$router.push('/products')"
       >Перейти в магазин
       </my-button>
     </div>
   </div>
-  <img class="image1" src="@/static/1.png" alt="">
-  <div class="base">
-    Добро пожаловать <br>
-    на FEFU market
-  </div>
-  <div class="info">
-    <img class="image3" src="@/static/3.png" alt="">
-    <div class="base2">Эта платформа поможет вам<br>
-      купить нужные товары<br>
-      на кампусе ДВФУ
+  <div class="container">
+    <div class="welcome">
+      <img class="image1" src="@/static/1.png" alt="">
+      <div class="base">
+        Добро пожаловать <br>
+        на FEFU market!
+      </div>
+    </div>
+    <div class="info">
+      <img class="image3" src="@/static/3.png" alt="">
+      <div class="base2">
+        <!--        На этой платформе вы можете разместить свои товары на продажу или-->
+        <!--        купить необходимое на кампусе ДВФУ-->
+        <p class="title">Надоело чекать беседы при поиске товаров?</p>
+        <p class="text">У нас ты можешь разместить товары на продажу
+          или же купить у других людей на кампусе ДВФУ</p>
+      </div>
     </div>
   </div>
-  <div class="footer">
-    ©2022
-  </div>
+  <my-footer></my-footer>
 
-  <my-window :show="dialogVisible">
+  <my-window :show="dialogVisible"
+             @updateShow="closeDialog">
     <au-form></au-form>
   </my-window>
-  <my-window :show="dialogVisible1">
+  <my-window :show="dialogVisible1"
+             @updateShow="closeDialog">
     <re-form></re-form>
   </my-window>
-
 </template>
 
 <script>
@@ -52,27 +58,36 @@ import MyButton from "@/components/UI/MyButton";
 import MyWindow from "@/components/UI/MyWindow";
 import AuForm from "@/components/AuForm";
 import ReForm from "@/components/ReForm";
+import MyFooter from "@/components/UI/MyFooter";
 
 export default {
   components: {
     ReForm,
     AuForm,
-    MyWindow, MyButton
+    MyWindow,
+    MyButton,
+    MyFooter
   },
   data() {
     return {
       dialogVisible: false,
       dialogVisible1: false,
     }
-
   },
   methods: {
     showDialog() {
       this.dialogVisible = true;
+      document.querySelector('body').style.overflow = 'hidden'
     },
     showDialog1() {
       this.dialogVisible1 = true;
+      document.querySelector('body').style.overflow = 'hidden'
     },
+    closeDialog() {
+      this.dialogVisible = false;
+      this.dialogVisible1 = false;
+      document.querySelector('body').removeAttribute('style')
+    }
   }
 
 }
@@ -94,23 +109,21 @@ body {
   color: #3D405B;
 }
 
-.navbar {
-  /*height: 50px;*/
-  /*display: flex;*/
-  /*align-items: center;*/
-  /*margin: 30px;*/
+.btn_aut {
+  background-color: #81b29a;
+  font-size: 20px;
+  padding: 5px 13px;
+  border-radius: 4px;
+  border: 1px;
+  color: #f4f1de;
+  transition: all .4s;
 }
 
-.entrance {
-  /*margin-left: auto;*/
-  /*margin-bottom: 15px;*/
-  font-size: 25px;
-  color: #3D405B;
+.btn_aut:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.entrance1 {
-  /*margin-left: auto;*/
-  /*margin-bottom: 15px;*/
+.nav-button {
   font-size: 25px;
   color: #3D405B;
 }
@@ -121,30 +134,31 @@ body {
   margin-left: 10px;
 }
 
+.welcome {
+  display: flex;
+  align-items: center;
+  margin: 50px 0 0 0;
+}
+
 .image1 {
-  margin-top: 100px;
-  margin-left: -168px;
+  margin-left: -210px;
   width: 1000px;
 }
 
 .base {
   font-size: 70px;
-  position: absolute;
-  margin-top: -400px;
-  margin-left: 800px;
+  line-height: 95px;
+  margin-right: -40px;
   color: #3D405B;
-
-}
-
-.btn {
-  margin: 0 0 0 1050px;
 }
 
 .info {
-  background: #81b29a; /* Цвет фона */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Параметры тени */
-  padding: 100px 0 100px 100px;
-  margin: 40px 200px 0 200px;
+  display: flex;
+  align-items: center;
+  background: #81b29a;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 100px;
+  margin: 0 20px 50px 20px;
   border-radius: 20px;
 }
 
@@ -153,26 +167,23 @@ body {
 }
 
 .base2 {
-  margin-left: 550px;
-  margin-top: -300px;
-  margin-bottom: 15px;
+  margin: 0 -20px 0 50px;
   font-size: 45px;
+  line-height: 60px;
   color: #3D405B;
 }
 
-.footer {
-  background: #81b29a;
-  margin-top: 120px;
-  padding-left: 710px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+.title {
+  margin-bottom: 30px;
 }
 
-.window {
-
+.text {
+  font-size: 36px;
 }
 
-.window1 {
-
+.error {
+  max-width: 100%;
+  color: #cb0606;
+  white-space: pre-wrap;
 }
 </style>

@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <products-sidebar></products-sidebar>
-      <div class="category col-8">
+      <div class="category ms-4 col-8">
         <div class="square1"
              v-for="category in categories"
              v-bind:key="category.id"
@@ -78,12 +78,7 @@ export default {
 
 </script>
 
-<style>
-.container {
-  padding-top: 100px;
-  height: 100%;
-}
-
+<style scoped>
 .square1 {
   background-color: #f4f1de;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
