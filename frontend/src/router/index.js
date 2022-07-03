@@ -61,10 +61,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    // let cartDialog = document.querySelector('#cart')
-    // if (cartDialog) {
-    //     cartDialog.remove()
-    // }
     if (localStorage.getItem('token')) {
         next()
     } else if (to.path === '/') {

@@ -22,7 +22,6 @@ from rest_framework import viewsets, status
 class BuildingsList(generics.ListAPIView):
     queryset = Building.objects.order_by('name')
     serializer_class = BuildingSerializer
-
     permission_classes = [AllowAny]
 
 # class ProfilesList(APIView):

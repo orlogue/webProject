@@ -1,14 +1,14 @@
 <template>
-  <div class="sidebar col-md-3 col-sm-2">
+  <div class="sidebar col-lg-3 mb-5">
     <div class="d-flex">
       <second-button
-          class="btn_menu mb-2"
+          class="btn_menu mb-2 flex-fill me-2"
           @click="$router.push({ name: 'Category' })"
       >
         Категории
       </second-button>
       <second-button
-          class="btn_menu ms-auto mb-2"
+          class="btn_menu mb-2 flex-fill ms-2"
           @click="goToProducts"
       >
         Все товары
@@ -164,7 +164,7 @@ export default {
 .sidebar {
   display: flex;
   flex-direction: column;
-  max-width: 275px;
+  /*max-width: 275px;*/
 }
 
 .discard-filters {

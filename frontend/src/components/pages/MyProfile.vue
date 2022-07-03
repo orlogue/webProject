@@ -55,10 +55,12 @@
 
 import NavBar from "@/components/NavBar";
 import MyFooter from "@/components/UI/MyFooter";
+import API from "@/mixins/API";
 import axios from "axios";
 
 export default {
   components: {NavBar, MyFooter},
+  mixins: [API],
   data() {
     return {
       profile: {},
@@ -72,16 +74,6 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
-    getProfile() {
-      axios
-          .get('/api/users/me/', this.$store.state.token)
-          .then(response => {
-            this.profile = response.data
-          })
-          .catch(error => {
-            console.log(error)
-          })
-    }
   }
 }
 </script>

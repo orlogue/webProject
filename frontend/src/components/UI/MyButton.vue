@@ -14,7 +14,7 @@ export default {
 .btns {
   border-style: none;
   align-self: flex-end;
-  background-color: #81b29a;
+  background-color: transparent;
   transition: all .3s;
 }
 /*.btns:hover{*/

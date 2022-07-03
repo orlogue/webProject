@@ -1,7 +1,7 @@
 <template>
   <nav-bar></nav-bar>
   <div class="container">
-    <div class="col">
+<!--    <div class="col">-->
       <div class="card mb-4">
         <div class="row g-0">
           <div class="col-5 img-parent">
@@ -48,9 +48,8 @@
           </div>
         </div>
       </div>
-      <!--          <router-link v-bind:to="product.get_absolute_url" class="button is-light mt-4">Подробнее</router-link>-->
     </div>
-  </div>
+<!--  </div>-->
   <footer></footer>
 </template>
 

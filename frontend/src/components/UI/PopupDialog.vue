@@ -1,10 +1,9 @@
 <template>
-  <div id="cart" class="dialog" v-if="show" @click="closeWindow"
->
+  <div class="dialog" v-if="show" @click="closeDialog">
     <div @click.stop class="dialog__content d-flex flex-column">
       <button
           class="btn_close"
-          @click="closeWindow"
+          @click="closeDialog"
       >
         <img class="close" src="@/static/close.png" alt="">
       </button>
@@ -22,13 +21,13 @@ export default {
     }
   },
   methods: {
-    closeWindow() {
+    closeDialog() {
       this.$emit('updateShow', false)
     }
   },
   watch: {
     $route() {
-      this.closeWindow()
+      this.closeDialog()
     }
   }
 }
@@ -47,8 +46,10 @@ export default {
 }
 
 .dialog__content {
-  margin: auto;
-  background: #f4f1de;
+  overflow: scroll;
+  margin: 30px auto auto auto;
+  max-height: 90vh;
+  background: #f1f0e8;
   border-radius: 12px;
   min-height: 50px;
   min-width: 300px;
@@ -61,8 +62,6 @@ export default {
 }
 
 .btn_close {
-  background-color: #f4f1de;
-  /*align-self: flex-end;*/
   align-self: end;
   border-style: none;
   transition: all .6s;
@@ -70,6 +69,5 @@ export default {
 
 .btn_close:hover {
   opacity: 0.7;
-  background-color: #f4f1de;
 }
 </style>

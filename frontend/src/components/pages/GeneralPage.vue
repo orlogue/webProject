@@ -5,13 +5,13 @@
       <my-button
           v-if="!this.$store.state.isAuthenticated"
           class="nav-button"
-          @click="showDialog"
+          @click="showloginDialog"
       >Войти
       </my-button>
       <my-button
           v-if="!this.$store.state.isAuthenticated"
           class="nav-button"
-          @click="showDialog1"
+          @click="showsignupDialog"
       >Регистрация
       </my-button>
       <my-button
@@ -43,19 +43,19 @@
   </div>
   <my-footer></my-footer>
 
-  <my-window :show="dialogVisible"
-             @updateShow="closeDialog">
+  <popup-dialog :show="loginVisible"
+                @updateShow="closeDialog">
     <au-form></au-form>
-  </my-window>
-  <my-window :show="dialogVisible1"
-             @updateShow="closeDialog">
+  </popup-dialog>
+  <popup-dialog :show="signupVisible"
+                @updateShow="closeDialog">
     <re-form></re-form>
-  </my-window>
+  </popup-dialog>
 </template>
 
 <script>
 import MyButton from "@/components/UI/MyButton";
-import MyWindow from "@/components/UI/MyWindow";
+import PopupDialog from "@/components/UI/PopupDialog";
 import AuForm from "@/components/AuForm";
 import ReForm from "@/components/ReForm";
 import MyFooter from "@/components/UI/MyFooter";
@@ -64,28 +64,28 @@ export default {
   components: {
     ReForm,
     AuForm,
-    MyWindow,
+    PopupDialog,
     MyButton,
     MyFooter
   },
   data() {
     return {
-      dialogVisible: false,
-      dialogVisible1: false,
+      loginVisible: false,
+      signupVisible: false,
     }
   },
   methods: {
-    showDialog() {
-      this.dialogVisible = true;
+    showloginDialog() {
+      this.loginVisible = true;
       document.querySelector('body').style.overflow = 'hidden'
     },
-    showDialog1() {
-      this.dialogVisible1 = true;
+    showsignupDialog() {
+      this.signupVisible = true;
       document.querySelector('body').style.overflow = 'hidden'
     },
     closeDialog() {
-      this.dialogVisible = false;
-      this.dialogVisible1 = false;
+      this.loginVisible = false;
+      this.signupVisible = false;
       document.querySelector('body').removeAttribute('style')
     }
   }

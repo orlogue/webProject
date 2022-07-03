@@ -1,14 +1,13 @@
 <template>
   <div class="cart">
-    <p class="fs-1 mb-4">Корзина</p>
+    <p class="fs-2 mb-4">Корзина</p>
     <div v-if="!cart.items.length">
-      <p class="fs-3">Здесь пока что пусто :(</p>
+      <p class="fs-4">Здесь пока что пусто :(</p>
     </div>
-    <div v-else class="">
-      <div
-          class="row mb-4"
-          v-for="item in cart.items"
-          :key="item.product.id"
+    <div v-else>
+      <div class="row mb-2"
+           v-for="item in cart.items"
+           :key="item.product.id"
       >
         <div class="col-2">
           <img class="img-thumbnail" v-if="item.product.image" :src="item.product.image" alt="">
@@ -104,7 +103,6 @@ export default {
 
 <style scoped>
 .name {
-  /*text-decoration: none;*/
   text-underline-offset: 2px;
   color: black;
 }

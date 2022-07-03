@@ -22,5 +22,15 @@ export default {
                     console.log(error)
                 })
         },
+        async getProfile() {
+            await axios
+                .get('/api/users/me/', localStorage.getItem('token'))
+                .then(response => {
+                    this.profile = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     }
 }

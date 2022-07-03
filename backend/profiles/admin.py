@@ -8,7 +8,7 @@ from .models import Profile, Building
 
 class ProfileAdmin(UserAdmin):
     model = Profile
-    list_display = ('phone_number', 'name', 'building', 'room', 'is_staff', 'is_active',)
+    list_display = ('id', 'phone_number', 'name', 'building', 'room', 'is_staff', 'is_active',)
     list_filter = ('phone_number', 'building', 'is_staff', 'is_active',)
     fieldsets = (
         (None, {'fields': ('phone_number', 'password', 'building', 'room')}),
@@ -25,5 +25,10 @@ class ProfileAdmin(UserAdmin):
     ordering = ('phone_number', 'name')
 
 
+class BuildingAdmin(admin.ModelAdmin):
+    model = Building
+    list_display = ['id', 'name']
+
+
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Building)
+admin.site.register(Building, BuildingAdmin)

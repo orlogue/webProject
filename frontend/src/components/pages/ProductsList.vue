@@ -1,6 +1,6 @@
 <template>
   <nav-bar></nav-bar>
-  <div class="container">
+  <div class="container-xl">
     <div class="row">
       <products-sidebar
           :building="this.filters.building"
@@ -11,26 +11,32 @@
           @sortProducts="this.filters.sortProduct = $event"
           @removeFilters="removeFilters"
       ></products-sidebar>
-      <div class="row ms-4 row-cols-2 col-9 flex-fill">
+      <div class="row row-cols-lg-2 row-cols-sm-1 col-9 flex-fill">
         <div
             class="col"
-            v-for="product in latestProducts"
+            v-for="product in products"
             v-bind:key="product.id"
         >
-          <div class="card mb-4"
-               @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"
-          >
+          <div class="card mb-4">
             <div class="row g-0">
               <div class="col-5 img-parent">
-                <img class="img" v-if="product.image" :src="product.image" alt="">
-                <img class="img" v-else src="@/static/default.jpg" alt="">
+                <img v-if="product.image"
+                     @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"
+                     class="img"
+                     :src="product.image"
+                     alt="">
+                <img v-else
+                     @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"
+                     class="img"
+                     src="@/static/default.jpg"
+                     alt="">
               </div>
               <div class="col-7 p-0">
                 <div class="card-body d-flex flex-column">
-                  <div class="card-title m-0">
-                    <div>
-                      <span class="fs-4 m-0">{{ product.name }}</span>
-                    </div>
+                  <div class="card-title m-0 fs-4"
+                       @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"
+                  >
+                    {{ product.name }}
                   </div>
                   <div class="card-text">
                     {{ truncate }}
@@ -40,9 +46,15 @@
                     <p class="text">Продавец: {{ product.seller }}</p>
                     <p class="text">Корпус: {{ product.building }}</p>
                     <div class="d-flex align-items-center">
-                      <p class="fs-2 m-0">{{ product.price }}₽</p>
+                      <p class="fs-3 m-0">{{ product.price }}₽ </p>
+                      <button v-if="checkProductSeller(product.seller_id)"
+                              @click.stop
+                              class="edit-button ms-auto"
+                      >
+                        Редактировать
+                      </button>
                       <green-button
-                          v-if="checkPresenceInCart(product)"
+                          v-else-if="checkPresenceInCart(product)"
                           @click="addToCart(product)"
                           @click.stop
                           class="ms-auto"
@@ -62,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div v-if="!latestProducts.length" class="fs-4">
+        <div v-if="!products.length" class="fs-4">
           Пока что здесь пусто :( <br>
           Подождите или попробуйте поискать в других корпусах.
         </div>
@@ -81,6 +93,7 @@ import axios from "axios";
 import GreenButton from "@/components/UI/GreenButton";
 import RedButton from "@/components/UI/RedButton";
 import CartMethods from "@/mixins/CartMethods";
+import API from "@/mixins/API";
 
 export default {
   name: 'ProductsList',
@@ -88,7 +101,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      latestProducts: [],
+      products: [],
       filters: {
         building: "",
         chosenCategory: "0",
@@ -96,9 +109,10 @@ export default {
       }
     }
   },
-  mixins: [CartMethods],
+  mixins: [CartMethods, API],
   mounted() {
-    this.getLatestProducts();
+    this.getProducts();
+    // this.getProfile();
     if (localStorage.getItem('filters')) {
       this.filters = JSON.parse(localStorage.getItem('filters'))
     } else {
@@ -109,7 +123,7 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
-    async getLatestProducts() {
+    async getProducts() {
       if (localStorage.getItem('filters'))
         this.filters = JSON.parse(localStorage.getItem('filters'))
       if (this.filters.building === "") {
@@ -127,7 +141,7 @@ export default {
           }&category=${this.filters.chosenCategory
           }&sort=${this.filters.sortProduct}`)
           .then(response => {
-            this.latestProducts = response.data
+            this.products = response.data
           })
           .catch(error => {
             console.log(error)
@@ -144,20 +158,20 @@ export default {
   watch: {
     'filters.building'() {
       localStorage.setItem('filters', JSON.stringify(this.filters))
-      this.getLatestProducts()
+      this.getProducts()
     },
     'filters.chosenCategory'() {
       localStorage.setItem('filters', JSON.stringify(this.filters))
-      this.getLatestProducts()
+      this.getProducts()
     },
     'filters.sortProduct'() {
       localStorage.setItem('filters', JSON.stringify(this.filters))
-      this.getLatestProducts()
+      this.getProducts()
     },
   },
   computed: {
     truncate() {
-      return this.latestProducts.forEach(item => {
+      return this.products.forEach(item => {
         if (item.description.length > 50) {
           item['truncatedDescription'] = item.description.substring(0, 50) + '...';
         } else {
@@ -170,12 +184,16 @@ export default {
 </script>
 
 <style scoped>
+.row {
+  margin: 0;
+}
+
 .card {
   background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  min-height: 220px;
-  max-height: 220px;
+  /*min-height: 220px;*/
+  /*max-height: 220px;*/
   transition: all .3s;
 }
 
@@ -185,6 +203,14 @@ export default {
 
 .card-body {
   min-height: 220px;
+}
+
+.card-title {
+  cursor: pointer;
+}
+
+.card-title:hover {
+  cursor: pointer;
 }
 
 .card-text {
@@ -205,6 +231,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .text {
@@ -212,7 +239,7 @@ export default {
   margin: 0;
 }
 
-.green-button-outline {
+.green-button-outline, .edit-button {
   display: flex;
   align-items: center;
   max-height: 33px;
@@ -224,6 +251,15 @@ export default {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+}
+
+.edit-button {
+  background-color: #d4d7d5;
+  border: 2px solid #acb0ae;
+}
+
+.edit-button:active {
+  background-color: #acb0ae;
 }
 
 .green-button-outline:active {

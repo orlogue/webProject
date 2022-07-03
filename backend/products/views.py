@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, viewsets
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
-from .serializers import ProductSerializer, CategorySerializer, SubCategorySerializer
+from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -42,18 +42,15 @@ class ProductList(generics.ListAPIView):
                'cheapFirst': 'price',
                'expensiveFirst': '-price'}
         if building == 'all' and category == '0':
-            return Product.objects.exclude(seller=self.request.user).order_by(dic[sort])
+            return Product.objects.order_by(dic[sort])
         elif building == 'all':
             return Product.objects.filter(category__pk=category) \
-                .exclude(seller=self.request.user) \
                 .order_by(dic[sort])
         elif category == '0':
             return Product.objects.filter(seller__building=building) \
-                .exclude(seller=self.request.user) \
                 .order_by(dic[sort])
         return Product.objects \
             .filter(Q(seller__building=building) & Q(category__pk=category)) \
-            .exclude(seller=self.request.user) \
             .order_by(dic[sort])
 
 
@@ -61,6 +58,11 @@ class ProductDetail(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'slug'
+
+
+class ProductCreate(generics.CreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductCreateSerializer
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
