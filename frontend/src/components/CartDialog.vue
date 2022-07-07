@@ -105,7 +105,7 @@ export default {
       formData.append('buyer', this.$root.profile.id)
 
       await axios
-          .post('api/order/create/', formData)
+          .post('api/order/', formData)
           .then(response => {
             if (response.status === 201) {
               this.cart.items.forEach(item => {
@@ -114,7 +114,7 @@ export default {
                 formData.append('quantity', item.quantity)
                 formData.append('order', response.data.id)
                 axios
-                    .post('api/order/item/create/', formData)
+                    .post('api/order/item/', formData)
                     .catch(error => {
                       console.log(error)
                     })

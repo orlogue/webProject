@@ -30,10 +30,12 @@ class TelegramIDCreate(generics.CreateAPIView):
     serializer_class = TelegramIDSerializer
     permission_classes = [AllowAny]
 
-# class ProfileUpdate(generics.UpdateAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileUpdateSerializer
-#     permission_classes = [IsAuthenticated]
+
+class ProfileRetrieve(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = SpecialUserSerializer
+    lookup_field = 'phone_number'
+    permission_classes = [AllowAny]
 
 # class ProfilesList(APIView):
 #     def get(self, request, format=None):
