@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-# from django.utils.text import slugify
 from pytils.translit import slugify
 from .utils import rand_slug
 from profiles.models import Profile
@@ -17,7 +16,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
 
     def get_absolute_url(self):
         return reverse('product_list_by_category', args=[self.slug])
@@ -53,8 +51,6 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return f'/{self.category.slug}/{self.slug}/'
-        # return reverse('product_detail',
-        #                args=[self.id, self.slug])
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -65,35 +61,3 @@ class Product(models.Model):
         if self.image:
             return 'http://127.0.0.1:8000/' + self.image.url
         return ''
-
-    # def get_range(self):
-    #     return [(i, str(i)) for i in range(1, self.quantity + 1)]
-
-
-class Order(models.Model):
-    buyer = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    sent = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ('-created',)
-
-    def __str__(self):
-        return 'Order {}'.format(self.pk)
-
-    def get_total_cost(self):
-        return sum(item.get_cost() for item in self.items.all())
-
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField(default=1)
-
-    def __str__(self):
-        return '{}'.format(self.id)
-
-    def get_cost(self):
-        return self.price * self.quantity

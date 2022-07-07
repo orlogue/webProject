@@ -47,14 +47,8 @@
                     <p class="text">Корпус: {{ product.building }}</p>
                     <div class="d-flex align-items-center">
                       <p class="fs-3 m-0">{{ product.price }}₽ </p>
-                      <button v-if="checkProductSeller(product.seller_id)"
-                              @click.stop
-                              class="edit-button ms-auto"
-                      >
-                        Редактировать
-                      </button>
                       <green-button
-                          v-else-if="checkPresenceInCart(product)"
+                          v-if="checkPresenceInCart(product)"
                           @click="addToCart(product)"
                           @click.stop
                           class="ms-auto"
@@ -192,8 +186,6 @@ export default {
   background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  /*min-height: 220px;*/
-  /*max-height: 220px;*/
   transition: all .3s;
 }
 

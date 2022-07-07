@@ -7,19 +7,14 @@
       >
         <img class="close" src="@/static/close.png" alt="">
       </button>
-      <slot></slot>
+      <slot @closeCurrentDialog="closeDialog"></slot>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    }
-  },
+  props: ['show'],
   methods: {
     closeDialog() {
       this.$emit('updateShow', false)
@@ -46,7 +41,7 @@ export default {
 }
 
 .dialog__content {
-  overflow: scroll;
+  overflow: auto;
   margin: 30px auto auto auto;
   max-height: 90vh;
   background: #f1f0e8;

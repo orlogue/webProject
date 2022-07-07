@@ -13,14 +13,11 @@ export default {
 <style scoped>
 .btns {
   border-style: none;
-  align-self: flex-end;
+  /*align-self: flex-end;*/
   background-color: transparent;
   transition: all .3s;
 }
-/*.btns:hover{*/
-/*  opacity: 0.7;*/
 
-/*}*/
 .btns:active, :hover {
   color: #0b182c;
 }

@@ -54,7 +54,9 @@
         <div class="ms-auto fs-4">
           Итого: {{ this.getTotalSum }}₽
         </div>
-        <green-button class="ms-3 fs-5">
+        <green-button class="ms-3 fs-5"
+                      @click="submitOrder"
+        >
           Оформить заказ
         </green-button>
       </div>
@@ -66,6 +68,7 @@
 import RedButton from "@/components/UI/RedButton";
 import GreenButton from "@/components/UI/GreenButton";
 import CartMethods from "@/mixins/CartMethods";
+import axios from "axios";
 
 export default {
   name: "CartDialog",
@@ -97,7 +100,34 @@ export default {
     getItemTotal(item) {
       return item.quantity * item.product.price
     },
-  }
+    async submitOrder() {
+      let formData = new FormData()
+      formData.append('buyer', this.$root.profile.id)
+
+      await axios
+          .post('api/order/create/', formData)
+          .then(response => {
+            if (response.status === 201) {
+              this.cart.items.forEach(item => {
+                formData = new FormData()
+                formData.append('product', item.product.id)
+                formData.append('quantity', item.quantity)
+                formData.append('order', response.data.id)
+                axios
+                    .post('api/order/item/create/', formData)
+                    .catch(error => {
+                      console.log(error)
+                    })
+              })
+              this.$store.commit('clearCart')
+              this.cart = this.$store.state.cart
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    }
+  },
 }
 </script>
 

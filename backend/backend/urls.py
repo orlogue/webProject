@@ -14,6 +14,7 @@ urlpatterns = [
     re_path(r'auth/', include('djoser.urls.authtoken')),
     path('api/', include('products.urls')),
     path('api/', include('profiles.urls')),
+    path('api/', include('order.urls')),
     # path('api/v1/auth/', include('rest_auth.urls')),
     # path('api/v1/auth/', include('allauth.urls')),
 

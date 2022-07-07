@@ -48,6 +48,9 @@ export default {
         this.getProfile()
         this.isAuthenticated = this.$store.state.isAuthenticated
       }
+    },
+    '$store.state.cart.items'() {
+      this.cart = this.$store.state.cart
     }
   }
 }

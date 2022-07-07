@@ -56,3 +56,6 @@ class Building(models.Model):
         verbose_name_plural = 'Корпусы'
 
 
+class Telegram(models.Model):
+    user = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='telegram')
+    telegram_id = models.CharField(blank=False, max_length=64)

@@ -3,8 +3,9 @@
     <p class="fs-2 mb-4">Размещение товара</p>
     <form class="row" @submit.prevent="submitForm" enctype="multipart/form-data">
       <div class="col-3">
-        <img class="img-fluid" src="@/static/default.jpg" alt="">
-        <input class="mt-3" type="file" accept="image/*" @change="onSelectedFile($event)">
+        <img v-if="imageUrl !== null" class="img-fluid" :src="imageUrl" alt="">
+        <img v-else class="img-fluid" src="@/static/default.jpg" alt="">
+        <input class="mt-3 image-selector" type="file" accept="image/*" @change="onSelectedFile($event)">
       </div>
       <div class="col">
         <div class="row mb-4">
@@ -76,7 +77,8 @@ export default {
         quantity: 1,
         price: '',
         image: null,
-      }
+      },
+      imageUrl: null
     }
   },
   mounted() {
@@ -88,7 +90,7 @@ export default {
     },
     onSelectedFile(e) {
       this.product.image = e.target.files[0]
-      console.log(this.product.image)
+      this.imageUrl = URL.createObjectURL(this.product.image)
     },
     async submitForm() {
       const formData = new FormData()
@@ -103,7 +105,7 @@ export default {
       await axios
           .post('api/products/create', formData)
           .then(response => {
-            this.$router.push({ name: 'ProductDetail', params: { slug: response.data.slug }})
+            this.$router.push({name: 'ProductDetail', params: {slug: response.data.slug}})
           })
           .catch(error => {
             console.log(error)
@@ -118,15 +120,47 @@ export default {
   max-width: 800px;
   padding: 10px;
 }
+
 .input-group-text {
   background-color: white;
   border-style: none;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
 .col {
   margin-right: 12px;
 }
+
+.image-selector {
+  max-width: 100%;
+  background-color: #FFFFFF;
+}
+
+.image-selector::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.image-selector::before {
+  content: 'Выберите фото';
+  display: inline-block;
+  /*background: linear-gradient(top, #f9f9f9, #e3e3e3);*/
+  /*border: 1px solid #999;*/
+  /*border-radius: 3px;*/
+  /*padding: 5px 8px;*/
+  /*outline: none;*/
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+.image-selector:active {
+  background-color: #dadad5;
+  transition: all .3s;
+}
+
 .submit-button {
   width: auto;
   margin-left: auto;

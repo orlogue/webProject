@@ -44,14 +44,11 @@ INSTALLED_APPS = [
     'profiles.apps.ProfilesConfig',
     'products.apps.ProductsConfig',
     'cart.apps.CartConfig',
+    'order.apps.OrderConfig',
 
     'rest_framework',
     'corsheaders',
-
     'rest_framework.authtoken',
-    # 'allauth',
-    # # 'allauth.account',
-    # 'rest_auth',
     'djoser',
 ]
 
@@ -152,6 +149,9 @@ DJOSER = {
         'current_user': 'profiles.serializers.SpecialUserSerializer',
         # 'user_create': 'profiles.serializers.UserRegistrationSerializer',
     },
+    'PERMISSIONS': {
+        'user': ['rest_framework.permissions.AllowAny'],
+    },
     # 'PERMISSIONS': {
     #     'activation': ['rest_framework.permissions.AllowAny'],
     #     'password_reset': ['rest_framework.permissions.AllowAny'],
@@ -206,16 +206,16 @@ CART_SESSION_ID = 'cart'
 #         'rest_framework.renderers.JSONRenderer',
 #         'rest_framework.renderers.TemplateHTMLRenderer'
 #     ],
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.ScopedRateThrottle',
-    # ],
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'cars_app': '50/day',
-    #     'first_app': '4/day'
-    # }
-    # ,
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 2
+# 'DEFAULT_THROTTLE_CLASSES': [
+#     'rest_framework.throttling.ScopedRateThrottle',
+# ],
+# 'DEFAULT_THROTTLE_RATES': {
+#     'cars_app': '50/day',
+#     'first_app': '4/day'
+# }
+# ,
+# 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+# 'PAGE_SIZE': 2
 
 # }
 # ACCOUNT_AUTHENTICATION_METHOD = 'phone_number'

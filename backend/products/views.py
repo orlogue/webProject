@@ -14,7 +14,7 @@ from cart.forms import CartAddProductForm
 
 from cart.cart import Cart
 # from .forms import OrderCreateForm
-from .models import OrderItem, Product, Order, Category, SubCategory
+from .models import Product, Category, SubCategory
 
 
 class LatestProductsList(viewsets.ReadOnlyModelViewSet):
@@ -34,6 +34,8 @@ class ProductList(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
+        if self.request.query_params.__len__() == 0:
+            return Product.objects.all()
         building = self.request.query_params.get('building', None)
         category = self.request.query_params.get('category', None)
         sort = self.request.query_params.get('sort', 'newFirst')
@@ -42,21 +44,37 @@ class ProductList(generics.ListAPIView):
                'cheapFirst': 'price',
                'expensiveFirst': '-price'}
         if building == 'all' and category == '0':
-            return Product.objects.order_by(dic[sort])
+            return Product.objects.exclude(seller__pk=self.request.user.pk).order_by(dic[sort])
         elif building == 'all':
             return Product.objects.filter(category__pk=category) \
+                .exclude(seller__pk=self.request.user.pk) \
                 .order_by(dic[sort])
         elif category == '0':
             return Product.objects.filter(seller__building=building) \
+                .exclude(seller__pk=self.request.user.pk) \
                 .order_by(dic[sort])
         return Product.objects \
             .filter(Q(seller__building=building) & Q(category__pk=category)) \
+            .exclude(seller__pk=self.request.user.pk) \
             .order_by(dic[sort])
 
 
-class ProductDetail(generics.RetrieveAPIView):
+class MyProductList(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        return Product.objects.filter(seller__pk=self.request.user.pk).order_by('-created')
+
+
+class ProductDetail(generics.RetrieveDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = 'slug'
+
+
+class ProductUpdate(generics.UpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductCreateSerializer
     lookup_field = 'slug'
 
 
@@ -147,28 +165,28 @@ def product_list(request, category_slug=None):
 #                   {'product': product})
 
 
-def product_detail(request, id, slug):
-    product = get_object_or_404(Product,
-                                id=id,
-                                slug=slug, )
-    cart_product_form = CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)])
-    return render(request, 'products/detail.html', {'product': product,
-                                                    'cart_product_form': cart_product_form})
+# def product_detail(request, id, slug):
+#     product = get_object_or_404(Product,
+#                                 id=id,
+#                                 slug=slug, )
+#     cart_product_form = CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)])
+#     return render(request, 'products/detail.html', {'product': product,
+#                                                     'cart_product_form': cart_product_form})
 
 
-def order_create(request):
-    cart = Cart(request)
-    if request.user.is_anonymous:
-        messages.error(request, 'Вам сначала необходимо зарегистрироваться!')
-        return render(request, 'cart/detail.html', {'cart': cart})
-    if request.method == 'POST':
-        order = Order.objects.create(buyer=request.user)
-        for item in cart:
-            OrderItem.objects.create(order=order, product=item['product'],
-                                     price=item['price'],
-                                     quantity=item['quantity'])
-        cart.clear()
-        return render(request, 'products/created.html')
-    # else:
-    #     form = OrderCreateForm()
-    return render(request, 'cart/detail.html', {'cart': cart})
+# def order_create(request):
+#     cart = Cart(request)
+#     if request.user.is_anonymous:
+#         messages.error(request, 'Вам сначала необходимо зарегистрироваться!')
+#         return render(request, 'cart/detail.html', {'cart': cart})
+#     if request.method == 'POST':
+#         order = Order.objects.create(buyer=request.user)
+#         for item in cart:
+#             OrderItem.objects.create(order=order, product=item['product'],
+#                                      price=item['price'],
+#                                      quantity=item['quantity'])
+#         cart.clear()
+#         return render(request, 'products/created.html')
+#     # else:
+#     #     form = OrderCreateForm()
+#     return render(request, 'cart/detail.html', {'cart': cart})

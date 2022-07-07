@@ -1,20 +1,20 @@
 <template>
   <div class="sidebar col-lg-3 mb-5">
-    <div class="d-flex">
-      <second-button
-          class="btn_menu mb-2 flex-fill me-2"
-          @click="$router.push({ name: 'Category' })"
-      >
-        Категории
-      </second-button>
-      <second-button
-          class="btn_menu mb-2 flex-fill ms-2"
-          @click="goToProducts"
-      >
-        Все товары
-      </second-button>
-    </div>
-    <div class="filter mt-2">
+    <!--    <div class="d-flex">-->
+    <!--      <second-button-->
+    <!--          class="btn_menu mb-2 flex-fill me-2"-->
+    <!--          @click="$router.push({ name: 'Category' })"-->
+    <!--      >-->
+    <!--        Категории-->
+    <!--      </second-button>-->
+    <!--      <button-->
+    <!--          class="btn_menu mb-2 flex-fill"-->
+    <!--          @click="goToProducts"-->
+    <!--      >-->
+    <!--        Все товары-->
+    <!--      </button>-->
+    <!--    </div>-->
+    <div class="filter">
       <div class="filter-title">
         Фильтрация
       </div>
@@ -58,12 +58,12 @@
         </div>
       </div>
     </div>
-    <button
+    <my-button
         class="discard-filters btn_menu mt-3"
         @click="removeFilters"
     >
       Сбросить фильтры
-    </button>
+    </my-button>
   </div>
 </template>
 
@@ -123,18 +123,24 @@ export default {
 
 <style scoped>
 .btn_menu {
+  border-style: none;
   font-size: 20px;
-  background-color: #f1f0e8;
+  background-color: #f5f4f1;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 8px;
+  transition: all .3s;
+}
+
+.btn_menu:active {
+  background-color: #dadad5;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .filter {
-  /*max-width: 243px;*/
-  /*background-color: #f4f1de;*/
+
   background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .filter-title {
@@ -142,8 +148,8 @@ export default {
   width: 100%;
   font-size: 20px;
   padding: 5px 10px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   background-color: #ea866b;
 }
 

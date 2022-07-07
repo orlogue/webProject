@@ -4,7 +4,7 @@ from .models import Product, Category, SubCategory
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = serializers.CharField(source='category.name')
+    category_name = serializers.CharField(source='category.name')
     seller = serializers.CharField(source='seller.name')
     seller_id = serializers.PrimaryKeyRelatedField(source='seller', read_only=True)
     building = serializers.CharField(source='seller.building')

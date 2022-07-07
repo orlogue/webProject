@@ -32,12 +32,12 @@
     </div>
   </div>
   <popup-dialog :show="cartVisible"
-             @updateShow="closeDialog"
+                @updateShow="closeDialog"
   >
     <cart-dialog></cart-dialog>
   </popup-dialog>
   <popup-dialog :show="productCreateVisible"
-             @updateShow="closeDialog"
+                @updateShow="closeDialog"
   >
     <new-product-dialog></new-product-dialog>
   </popup-dialog>

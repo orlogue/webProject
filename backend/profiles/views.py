@@ -1,8 +1,8 @@
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Profile, Building
-from .serializers import BuildingSerializer
+from .serializers import *
 
 from rest_framework import generics
 
@@ -23,6 +23,17 @@ class BuildingsList(generics.ListAPIView):
     queryset = Building.objects.order_by('name')
     serializer_class = BuildingSerializer
     permission_classes = [AllowAny]
+
+
+class TelegramIDCreate(generics.CreateAPIView):
+    queryset = Telegram.objects.all()
+    serializer_class = TelegramIDSerializer
+    permission_classes = [AllowAny]
+
+# class ProfileUpdate(generics.UpdateAPIView):
+#     queryset = Profile.objects.all()
+#     serializer_class = ProfileUpdateSerializer
+#     permission_classes = [IsAuthenticated]
 
 # class ProfilesList(APIView):
 #     def get(self, request, format=None):
