@@ -7,7 +7,7 @@ from telegram.ext import Updater, CallbackContext, MessageHandler, Filters, Call
     CommandHandler
 from telegram.update import Update
 
-BOT_TOKEN = '5515977752:AAES0iPisL0jtbX4vaV3nOskfcBhJZ5-pno'
+BOT_TOKEN = '5387118179:AAGzi4NzqEj17_hHQi872c3TWWjEoa2Xszk'
 BACKEND_BASE = 'http://127.0.0.1:8000'
 updater = Updater(BOT_TOKEN, use_context=True)
 
