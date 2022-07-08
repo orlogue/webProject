@@ -58,7 +58,6 @@ export default {
       cartVisible: false,
       productCreateVisible: false,
       isAuthenticated: this.$store.state.isAuthenticated,
-      // profile: {},
     }
   },
   methods: {

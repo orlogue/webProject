@@ -1,56 +1,53 @@
 <template>
   <nav-bar></nav-bar>
   <div class="container">
-<!--    <div class="col">-->
-      <div class="card mb-4">
-        <div class="row g-0">
-          <div class="col-5 img-parent">
-            <img class="img" v-if="product.image" :src="product.image" alt="">
-            <img class="img" v-else src="@/static/default.jpg" alt="">
-          </div>
-          <div class="col-7 p-0">
-            <div class="card-body d-flex flex-column">
-              <div class="card-title m-0">
-                <div>
-                  <span class="fs-1 m-0">{{ product.name }}</span>
-                  <!--                      <span class="fs-4 m-0">ВРЕМЯ</span>-->
-                </div>
+    <div class="card mb-4">
+      <div class="row g-0">
+        <div class="col-5 img-parent">
+          <img class="img" v-if="product.image" :src="product.image" alt="">
+          <img class="img" v-else src="@/static/default.jpg" alt="">
+        </div>
+        <div class="col-7 p-0">
+          <div class="card-body d-flex flex-column">
+            <div class="card-title m-0">
+              <div>
+                <span class="fs-1 m-0">{{ product.name }}</span>
               </div>
-              <div class="card-text">
-                <p class="text">Описание:
-                  <span v-if="!product.description" class="text-muted">Пусто</span>
-                  <span v-else>{{ product.description }}</span>
-                </p>
-              </div>
-              <div class="mt-auto">
-                <p class="text">Продавец: {{ product.seller }}</p>
-                <p class="text">Корпус: {{ product.building }}</p>
-                <p class="text">Количество: {{ product.quantity }}</p>
-                <div class="d-flex align-items-center">
-                  <p class="fs-2 m-0">{{ product.price }}₽</p>
-                  <div v-if="checkProductSeller(product.seller_id)"></div>
-                  <green-button
-                      v-else-if="checkPresenceInCart(product)"
-                      @click="addToCart(product)"
-                      @click.stop
-                      class="ms-auto"
-                  ><span class="text">В корзину</span>
-                  </green-button>
-                  <button
-                      v-else
-                      @click="removeFromCart(product)"
-                      @click.stop
-                      class="green-button-outline ms-auto"
-                  ><span class="text">Добавлен</span>
-                  </button>
-                </div>
+            </div>
+            <div class="card-text">
+              <p class="text">Описание:
+                <span v-if="!product.description" class="text-muted">Пусто</span>
+                <span v-else>{{ product.description }}</span>
+              </p>
+            </div>
+            <div class="mt-auto">
+              <p class="text">Продавец: {{ product.seller }}</p>
+              <p class="text">Корпус: {{ product.building }}</p>
+              <p class="text">Количество: {{ product.quantity }}</p>
+              <div class="d-flex align-items-center">
+                <p class="fs-2 m-0">{{ product.price }}₽</p>
+                <div v-if="checkProductSeller(product.seller_id)"></div>
+                <green-button
+                    v-else-if="checkPresenceInCart(product)"
+                    @click="addToCart(product)"
+                    @click.stop
+                    class="ms-auto"
+                ><span class="text">В корзину</span>
+                </green-button>
+                <button
+                    v-else
+                    @click="removeFromCart(product)"
+                    @click.stop
+                    class="green-button-outline ms-auto"
+                ><span class="text">Добавлен</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-<!--  </div>-->
+  </div>
   <my-footer></my-footer>
 </template>
 
@@ -93,7 +90,6 @@ export default {
         this.product_slug = newValue
         this.getProduct()
       },
-      // immediate: true,
     }
   }
 }

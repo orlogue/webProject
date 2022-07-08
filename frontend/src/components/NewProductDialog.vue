@@ -23,7 +23,6 @@
         </div>
         <div class="row mb-4">
           <span class="col-sm-4 fs-4">Категория: </span>
-          <!--            <input type="number" min="1" class="form-input" v-model="quantity">-->
           <select class="col-sm-8 fs-5" @change="setCategory($event)">
             <option v-for="category in categories"
                     :key="category.id"
@@ -145,11 +144,6 @@ export default {
 .image-selector::before {
   content: 'Выберите фото';
   display: inline-block;
-  /*background: linear-gradient(top, #f9f9f9, #e3e3e3);*/
-  /*border: 1px solid #999;*/
-  /*border-radius: 3px;*/
-  /*padding: 5px 8px;*/
-  /*outline: none;*/
   white-space: nowrap;
   -webkit-user-select: none;
   cursor: pointer;

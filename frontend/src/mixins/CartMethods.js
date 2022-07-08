@@ -1,11 +1,7 @@
-import {toast} from "bulma-toast";
-import axios from "axios";
-
 export default {
     name: 'CartMethods',
     data() {
-        return {
-        }
+        return {}
     },
     methods: {
         addToCart(product) {
@@ -14,14 +10,6 @@ export default {
                 quantity: 1
             }
             this.$store.commit('addToCart', item)
-            // toast({
-            //     message: 'Товар был добавлен в корзину!',
-            //     type: 'is-success',
-            //     dismissible: false,
-            //     pauseOnHover: true,
-            //     duration: 2500,
-            //     position: 'bottom-right',
-            // })
         },
         checkPresenceInCart(product) {
             const exists = this.$root.cart.items.filter(item => item.product.id === product.id)
@@ -35,14 +23,6 @@ export default {
         },
         removeFromCart(product) {
             this.$store.commit('removeFromCart', product)
-            // toast({
-            //     message: 'Товар был удалён из корзины!',
-            //     type: 'is-success',
-            //     dismissible: false,
-            //     pauseOnHover: true,
-            //     duration: 2000,
-            //     position: 'bottom-right',
-            // })
         }
     }
 }

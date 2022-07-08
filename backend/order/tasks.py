@@ -1,6 +1,6 @@
 import json
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from backend.celery_helper import app
 from bot.bot import bot

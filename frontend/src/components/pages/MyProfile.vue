@@ -38,7 +38,6 @@
             <div class="row mb-2">
               <span class="col-5 fs-5">Номер: </span>
               <span class="col-7 fs-5">{{ profile.phone_number }}</span>
-              <!--              <input v-else type="text" class="col-7 fs-5" v-model="newProfile.phone_number">-->
             </div>
             <div class="row mb-2">
               <span class="col-5 fs-5">Корпус: </span>
@@ -162,8 +161,6 @@
             </nav>
           </div>
           <div class="card-body orders pt-3 px-4">
-            <!--            <div class="row">-->
-            <!--              <div class="col col-lg-2 col-sm-3 p-0 flex-fill ">-->
             <div class="row mb-3"
                  v-for="order in orders"
                  :key="order.id"
@@ -209,8 +206,6 @@
       </div>
     </div>
   </div>
-  <!--    </div>-->
-  <!--  </div>-->
   <my-footer></my-footer>
 
   <edit-product-dialog :product="product"
@@ -234,7 +229,16 @@ import PopupDialog from "@/components/UI/PopupDialog";
 import ThreeDots from "@/components/UI/ThreeDots";
 
 export default {
-  components: {ThreeDots, PopupDialog, GreenButton, RedButton, MyButton, NavBar, MyFooter, EditProductDialog},
+  components: {
+    ThreeDots,
+    PopupDialog,
+    GreenButton,
+    RedButton,
+    MyButton,
+    NavBar,
+    MyFooter,
+    EditProductDialog
+  },
   mixins: [API],
   data() {
     return {
@@ -333,7 +337,6 @@ export default {
 
 <style scoped>
 .card {
-  /*max-width: 243px;*/
   background-color: #f1f0e8;;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
@@ -354,7 +357,6 @@ export default {
 
 .scrollable-list {
   display: flex;
-  /*max-height: 330px;*/
   margin-right: 0;
   padding: 16px;
   overflow: auto;
@@ -421,13 +423,6 @@ select {
 
 .dropdown-icon {
   border-style: none;
-  /*background-color: ;*/
-  /*align-self: center;*/
-  /*display: inline-block;*/
-  /*text-align: center;*/
-  /*line-height: 1px;*/
-  /*margin: auto;*/
-  /*padding: 0;*/
 }
 
 #dropdownMenuButton1 {

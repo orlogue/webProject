@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <h1>Ошибка 404. <br>Страница не найдена.</h1>
+    <h1>Ошибка 404. <br>Страница не найдена.</h1>
   </div>
 </template>
 

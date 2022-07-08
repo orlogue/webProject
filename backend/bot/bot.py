@@ -2,8 +2,9 @@ import json
 import os
 import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, \
-    ReplyKeyboardRemove, ChosenInlineResult
-from telegram.ext import Updater, CallbackContext, MessageHandler, Filters, CallbackQueryHandler, CommandHandler
+    ReplyKeyboardRemove
+from telegram.ext import Updater, CallbackContext, MessageHandler, Filters, CallbackQueryHandler, \
+    CommandHandler
 from telegram.update import Update
 
 BOT_TOKEN = '5515977752:AAES0iPisL0jtbX4vaV3nOskfcBhJZ5-pno'
@@ -14,11 +15,6 @@ bot = updater.bot
 dispatcher = updater.dispatcher
 
 
-# updater.start_polling()
-# def send_back(update: Update, context: CallbackContext):
-#     update.message.reply_text('ads')
-
-
 def start(update: Update, context: CallbackContext):
     update.message.reply_text('Приветствуем Вас! '
                               '\nДля начала нажмите на\n/send_phone_number')
@@ -26,7 +22,6 @@ def start(update: Update, context: CallbackContext):
 
 def send_phone_number(update: Update, context: CallbackContext):
     con_keyboard = KeyboardButton(text="Поделиться номером телефона", request_contact=True)
-    # loc_keyboard = KeyboardButton(text="send_location", request_location=True)
     custom_keyboard = [[con_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
     update.message.reply_text(text='Пожалуйста, поделитесь своим номером '
@@ -52,7 +47,6 @@ def contact_callback(update, context):
 def button(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
     query.answer()
-    # This will define which button the user tapped on (from what you assigned to "callback_data". As I assigned them "1" and "2"):
     data = json.loads(query.data)
 
     product_id = data['prdct_id']
@@ -113,32 +107,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-# def send_order_approval(chat_id, product):
-#     yes = InlineKeyboardButton(text="Да", callback_data=1)
-#     no = InlineKeyboardButton(text="Нет", callback_data=0)
-#     custom_keyboard = [[yes, no]]
-#     reply_markup = InlineKeyboardMarkup(custom_keyboard)
-#     updater.bot.send_message(chat_id=chat_id,
-#                              text='У вас хотят купить товар '
-#                                   f'{product}',
-#                              reply_markup=reply_markup)
-
-
-# updater.dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, bot))
-# updater.dispatcher.add_handler(CallbackQueryHandler(button))
-# updater.start_polling()
-
-# def main():
-#     updater = Updater(token=BOT_TOKEN, use_context=True)
-#     dispatcher = updater.dispatcher
-#
-#     # start_handler = CommandHandler("start", start)
-#     # help_handler = CommandHandler("help", help)
-#     dispatcher.add_handler(CallbackQueryHandler(button))
-#     dispatcher.add_handler(send_order_approval)
-#     # dispatcher.add_handler(help_handler)
-#     updater.start_polling()
-#
-#
-# if __name__ == '__main__':
-#     main()

@@ -1,9 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
 from .models import Profile, Building
-
-# Register your models here.
 
 
 class ProfileAdmin(UserAdmin):
@@ -14,13 +11,6 @@ class ProfileAdmin(UserAdmin):
         (None, {'fields': ('phone_number', 'password', 'building', 'room')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
-    # add_fieldsets = (
-    #     (None, {
-    #         'classes': ('wide',),
-    #         'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
-    #     ),
-    # )
-    # list_editable = ('phone_number', 'name', 'building', 'room')
     search_fields = ('phone_number', 'name')
     ordering = ('phone_number', 'name')
 

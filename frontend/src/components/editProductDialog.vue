@@ -94,7 +94,6 @@ export default {
   data() {
     return {
       categories: [],
-      // updatedProduct: {},
       image: null,
       imageUrl: null,
     }
@@ -180,8 +179,6 @@ export default {
 
 .button {
   width: auto;
-  /*line-height: 24px;*/
-  /*margin-left: auto;*/
 }
 
 .dialog {

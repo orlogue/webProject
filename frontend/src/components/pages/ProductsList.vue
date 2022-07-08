@@ -133,7 +133,6 @@ export default {
   mixins: [CartMethods, API],
   mounted() {
     this.getProducts();
-    // this.getProfile();
     if (localStorage.getItem('filters')) {
       this.filters = JSON.parse(localStorage.getItem('filters'))
     } else {
@@ -141,9 +140,6 @@ export default {
     }
   },
   methods: {
-    showDialog() {
-      this.dialogVisible = true;
-    },
     async getProducts() {
       if (localStorage.getItem('filters'))
         this.filters = JSON.parse(localStorage.getItem('filters'))

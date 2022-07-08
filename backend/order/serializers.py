@@ -29,7 +29,3 @@ class MyOrdersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'buyer', 'created', 'updated', 'status', 'items']
-# class OrderItemSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = OrderItem
-#         fields = '__all__'

@@ -16,11 +16,6 @@
         <p class="error m-0" v-if="error">{{ error }}</p>
         <button class="btn_aut mt-4">Войти</button>
       </div>
-
-      <!--      <div class="d-flex flex-column">-->
-      <!--        <div class="flex-grow-1"><p class="error" v-if="error">{{ error }}</p></div>-->
-      <!--        <button class="btn_aut align-self-center">Войти</button>-->
-      <!--      </div>-->
     </form>
   </div>
 </template>
@@ -74,7 +69,6 @@ export default {
 <style scoped>
 .authorization {
   max-width: 256px;
-  /*min-height: 360px;*/
   margin: 10px 40px;
 }
 
@@ -85,5 +79,4 @@ export default {
   margin-bottom: 10px;
   border-style: none;
 }
-
 </style>

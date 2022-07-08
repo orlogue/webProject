@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 from pytils.translit import slugify
 from .utils import rand_slug
 from profiles.models import Profile
@@ -46,15 +45,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return f'/{self.category.slug}/{self.slug}/'
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name + '-' + rand_slug())
         super(Product, self).save(*args, **kwargs)
-
-    def get_image(self):
-        if self.image:
-            return 'http://127.0.0.1:8000/' + self.image.url
-        return ''

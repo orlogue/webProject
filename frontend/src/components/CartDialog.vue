@@ -95,7 +95,6 @@ export default {
     changeQuantity(e, item) {
       item.quantity = +e.target.value
       this.$store.commit('changeQuantity', item)
-      // this.$store.state.cart.items
     },
     getItemTotal(item) {
       return item.quantity * item.product.price
