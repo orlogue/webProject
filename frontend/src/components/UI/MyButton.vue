@@ -13,7 +13,6 @@ export default {
 <style scoped>
 .btns {
   border-style: none;
-  /*align-self: flex-end;*/
   background-color: transparent;
   transition: all .3s;
 }

@@ -1,9 +1,9 @@
 from django.db.models import Q
 from rest_framework import generics, viewsets
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser
 from .serializers import *
-from .models import Product, Category, SubCategory
+from .models import Product, Category
 
 
 class LatestProductsList(viewsets.ReadOnlyModelViewSet):
@@ -95,9 +95,3 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
-
-
-class SubCategoryList(generics.ListAPIView):
-    queryset = SubCategory.objects.all()
-    serializer_class = SubCategorySerializer
-    permission_classes = [IsAuthenticated]

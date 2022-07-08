@@ -14,7 +14,7 @@ export default {
         },
         async getCategories() {
             await axios
-                .get('/api/category/subcategory/')
+                .get('/api/category/')
                 .then(response => {
                     this.categories = response.data
                 })

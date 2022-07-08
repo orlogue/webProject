@@ -17,18 +17,9 @@ class Category(models.Model):
         return self.name
 
 
-class SubCategory(models.Model):
-    category = models.ForeignKey(Category, related_name='subcategory', on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-
 class Product(models.Model):
     seller = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, default='')
     slug = models.SlugField(max_length=200, db_index=True, unique=True, default='')
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)

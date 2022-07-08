@@ -10,5 +10,4 @@ urlpatterns = [
     path('products/<slug:slug>/update/', ProductUpdate.as_view()),
     path('category/', CategoryViewSet.as_view({'get': 'list'})),
     path('category/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve'})),
-    path('category/subcategory/', SubCategoryList.as_view()),
 ]
