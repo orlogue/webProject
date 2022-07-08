@@ -9,7 +9,6 @@
       </button>
       <div class="product-create-dialog">
         <p class="fs-2 mb-4">Изменение информации о товаре</p>
-        <!--    <form class="row" @submit.prevent="submitForm" enctype="multipart/form-data">-->
         <div class="row">
           <div class="col-3">
             <img v-if="product.image && imageUrl === null"
@@ -39,7 +38,6 @@
             </div>
             <div class="row mb-4">
               <span class="col-sm-4 fs-4">Категория: </span>
-              <!--            <input type="number" min="1" class="form-input" v-model="quantity">-->
               <select class="col-sm-8 fs-5" @change="setCategory($event)">
                 <option v-for="category in categories"
                         :key="category.id"
@@ -78,7 +76,6 @@
             </div>
           </div>
         </div>
-        <!--    </form>-->
       </div>
     </div>
   </div>
@@ -119,15 +116,10 @@ export default {
     },
     async submitForm() {
       const formData = new FormData()
-      // if (this.updatedProduct.name !== this.product.name)
       formData.append('name', this.product.name)
-      // if (this.updatedProduct.description !== this.product.description)
       formData.append('description', this.product.description)
-      // if (this.updatedProduct.category !== this.product.category)
       formData.append('category', this.product.category)
-      // if (this.updatedProduct.quantity !== this.product.quantity)
       formData.append('quantity', this.product.quantity)
-      // if (this.updatedProduct.price !== this.product.price)
       formData.append('price', this.product.price)
       if (this.image !== null)
         formData.append('image', this.image)
@@ -141,11 +133,6 @@ export default {
             console.log(error)
           })
     },
-    // watch: {
-    //   'product.name'(newValue) {
-    //     this.updatedProduct.name = newValue
-    //   }
-    // }
   }
 }
 </script>

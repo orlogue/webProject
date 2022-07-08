@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
 from .serializers import *
@@ -29,13 +30,20 @@ class LatestProductsList(viewsets.ReadOnlyModelViewSet):
         return [permission() for permission in permission_classes]
 
 
+class ProductListPagination(PageNumberPagination):
+    page_size = 10
+
 class ProductList(generics.ListAPIView):
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
+    pagination_class = ProductListPagination
+    # queryset = Product.objects.all()
 
     def get_queryset(self):
         if self.request.query_params.__len__() == 0:
             return Product.objects.all()
+
+        products = Product.objects.filter(quantity__gt=0)
         building = self.request.query_params.get('building', None)
         category = self.request.query_params.get('category', None)
         sort = self.request.query_params.get('sort', 'newFirst')
@@ -44,16 +52,16 @@ class ProductList(generics.ListAPIView):
                'cheapFirst': 'price',
                'expensiveFirst': '-price'}
         if building == 'all' and category == '0':
-            return Product.objects.exclude(seller__pk=self.request.user.pk).order_by(dic[sort])
+            return products.exclude(seller__pk=self.request.user.pk).order_by(dic[sort])
         elif building == 'all':
-            return Product.objects.filter(category__pk=category) \
+            return products.filter(category__pk=category) \
                 .exclude(seller__pk=self.request.user.pk) \
                 .order_by(dic[sort])
         elif category == '0':
-            return Product.objects.filter(seller__building=building) \
+            return products.filter(seller__building=building) \
                 .exclude(seller__pk=self.request.user.pk) \
                 .order_by(dic[sort])
-        return Product.objects \
+        return products \
             .filter(Q(seller__building=building) & Q(category__pk=category)) \
             .exclude(seller__pk=self.request.user.pk) \
             .order_by(dic[sort])
@@ -64,6 +72,12 @@ class MyProductList(generics.ListAPIView):
 
     def get_queryset(self):
         return Product.objects.filter(seller__pk=self.request.user.pk).order_by('-created')
+
+
+class ProductDetailByID(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
 
 
 class ProductDetail(generics.RetrieveDestroyAPIView):
@@ -132,23 +146,23 @@ class SubCategoryList(generics.ListAPIView):
 #     serializer_class = CategorySerializer
 
 
-def product_list(request, category_slug=None):
-    category = None
-    categories = Category.objects.all()
-    products = Product.objects.all()
-    if category_slug:
-        category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=category)
-    cart_product_forms = []
-    for product in products:
-        cart_product_forms.append(
-            CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)]))
-    return render(request,
-                  'profiles/homepage.html',
-                  {'category': category,
-                   'categories': categories,
-                   'products': products,
-                   'cart_product_forms': cart_product_forms, })
+# def product_list(request, category_slug=None):
+#     category = None
+#     categories = Category.objects.all()
+#     products = Product.objects.all()
+#     if category_slug:
+#         category = get_object_or_404(Category, slug=category_slug)
+#         products = products.filter(category=category)
+#     cart_product_forms = []
+#     for product in products:
+#         cart_product_forms.append(
+#             CartAddProductForm(quantity_choices=[(i, str(i)) for i in range(1, product.quantity + 1)]))
+#     return render(request,
+#                   'profiles/homepage.html',
+#                   {'category': category,
+#                    'categories': categories,
+#                    'products': products,
+#                    'cart_product_forms': cart_product_forms, })
 
 
 #

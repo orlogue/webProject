@@ -100,10 +100,11 @@ export default {
       formData.append('seller', this.product.seller)
       formData.append('quantity', this.product.quantity)
       formData.append('price', this.product.price)
-      formData.append('image', this.product.image)
+      if (this.product.image !== null)
+        formData.append('image', this.product.image)
 
       await axios
-          .post('api/products/create', formData)
+          .post('api/products/create/', formData)
           .then(response => {
             this.$router.push({name: 'ProductDetail', params: {slug: response.data.slug}})
           })

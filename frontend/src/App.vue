@@ -57,15 +57,23 @@ export default {
 </script>
 
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Ruda&display=swap');
+
 body {
-  padding: 0;
+  background-image: url('@/static/2.jpg');
+  background-repeat: no-repeat;
+  background-color: #F4F1E0 !important;
   margin: 0;
+  padding: 0;
+  font-family: 'Ruda', Arial, Helvetica, sans-serif !important;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
 
 #app {
+  /*background-color: #F4F1E0;*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -92,5 +100,20 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.nav-button {
+  font-size: 25px;
+  color: #3D405B;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 38px;
+  color: #3D405B;
+  margin-left: 10px;
 }
 </style>

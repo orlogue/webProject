@@ -94,15 +94,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Ruda&display=swap');
-
-body {
-  background-image: url('@/static/2.jpg');
-  margin: 0;
-  padding: 0;
-  font-family: 'Ruda', sans-serif !important;
-  position: relative;
-}
 
 .btn1 {
   font-size: 25px;
@@ -121,17 +112,6 @@ body {
 
 .btn_aut:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-}
-
-.nav-button {
-  font-size: 25px;
-  color: #3D405B;
-}
-
-.logo {
-  font-size: 38px;
-  color: #3D405B;
-  margin-left: 10px;
 }
 
 .welcome {

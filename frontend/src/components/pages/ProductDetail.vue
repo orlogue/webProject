@@ -28,8 +28,9 @@
                 <p class="text">Количество: {{ product.quantity }}</p>
                 <div class="d-flex align-items-center">
                   <p class="fs-2 m-0">{{ product.price }}₽</p>
+                  <div v-if="checkProductSeller(product.seller_id)"></div>
                   <green-button
-                      v-if="checkPresenceInCart(product)"
+                      v-else-if="checkPresenceInCart(product)"
                       @click="addToCart(product)"
                       @click.stop
                       class="ms-auto"
@@ -50,7 +51,7 @@
       </div>
     </div>
 <!--  </div>-->
-  <footer></footer>
+  <my-footer></my-footer>
 </template>
 
 <script>
@@ -66,7 +67,7 @@ export default {
   components: {GreenButton, MyButton, NavBar, MyFooter},
   data() {
     return {
-      product: Object,
+      product: {},
       product_slug: this.$route.params.slug,
     }
   },

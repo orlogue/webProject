@@ -91,11 +91,14 @@
                     <div class="card-title m-0 fs-4">
                       <!--                         @click="$router.push({ name: 'ProductDetail', params: { slug: product.slug }})"-->
                       <div class="d-flex justify-content-between align-items-center">
-                        {{ product.name }}
+                        <a class="clickable name"
+                           @click="$router.push({ name: 'ProductDetail',
+                              params: { slug: product.slug }})"
+                        >{{ product.name }}</a>
                         <div class="dropdown">
                           <button class="dropdown-icon" type="button" id="dropdownMenuButton1"
                                   data-bs-toggle="dropdown" aria-expanded="false">
-                            ...
+                            <ThreeDots></ThreeDots>
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li>
@@ -131,21 +134,83 @@
             </div>
           </div>
         </div>
-        <div class="card fs-5">
-          <div class="card-header ps-3 py-2">
+        <div class="card fs-5 mb-4">
+          <div class="card-header ps-3 py-2 d-flex align-items-center">
             <h3 style="margin-bottom: 0;">
               История заказов
             </h3>
+            <nav v-if="products.length"
+                 class="ms-auto">
+              <ul class="pagination mb-0">
+                <li class="page-item">
+                  <button class="page-link"
+                          @click="page--"
+                          :class="page === 1 ? 'disabled': ''"
+                  >
+                    <span aria-hidden="true">Назад</span>
+                  </button>
+                </li>
+                <li class="page-item">
+                  <button class="page-link"
+                          @click="page++"
+                          :class="showNextButton ? '' : 'disabled'"
+                  >
+                    <span aria-hidden="true">Вперёд</span>
+                  </button>
+                </li>
+              </ul>
+            </nav>
           </div>
-          <div class="row px-3">
-            <div class="col col-lg-2 col-sm-3 p-0 flex-fill">
-              <span class="list-group-item">Заказы</span>
+          <div class="card-body orders pt-3 px-4">
+            <!--            <div class="row">-->
+            <!--              <div class="col col-lg-2 col-sm-3 p-0 flex-fill ">-->
+            <div class="row mb-3"
+                 v-for="order in orders"
+                 :key="order.id"
+            >
+              <div class="card order">
+                <div class="card-title my-2">Заказ: {{ order.id }}</div>
+                <div class="row mb-2"
+                     v-for="item in order.items"
+                     :key="item.id">
+                  <div class="col-2">
+                    <img class="img-thumbnail" v-if="item.product.image" :src="item.product.image" alt="">
+                    <img class="img-thumbnail" v-else src="@/static/default.jpg" alt="">
+                  </div>
+                  <div class="col">
+                    <div class="d-flex">
+                      <router-link class="name fs-5 m-0"
+                                   :to="{ name: 'ProductDetail',
+                       params: { slug: item.product.slug }}"
+                      >
+                        {{ item.product.name }}
+                      </router-link>
+                    </div>
+                    <div class="row align-items-center">
+                      <div class="col-5">
+                        <p class="text">Продавец: {{ item.product.seller }}</p>
+                        <p class="text">Корпус: {{ item.product.building }}</p>
+                      </div>
+                      <div class="col-4">
+                        <div class="d-flex align-items-center">
+                          <span class="text me-2">Количество: {{ item.quantity }}</span>
+                        </div>
+                        <p class="text">Цена: {{ item.product.price * item.quantity }}₽</p>
+                      </div>
+                      <div class="col-3">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <!--    </div>-->
+  <!--  </div>-->
   <my-footer></my-footer>
 
   <edit-product-dialog :product="product"
@@ -166,9 +231,10 @@ import RedButton from "@/components/UI/RedButton";
 import GreenButton from "@/components/UI/GreenButton";
 import EditProductDialog from "@/components/editProductDialog";
 import PopupDialog from "@/components/UI/PopupDialog";
+import ThreeDots from "@/components/UI/ThreeDots";
 
 export default {
-  components: {PopupDialog, GreenButton, RedButton, MyButton, NavBar, MyFooter, EditProductDialog},
+  components: {ThreeDots, PopupDialog, GreenButton, RedButton, MyButton, NavBar, MyFooter, EditProductDialog},
   mixins: [API],
   data() {
     return {
@@ -179,12 +245,16 @@ export default {
       products: [],
       product: {},
       editDialog: false,
+      orders: [],
+      page: 1,
+      showNextButton: false,
     }
   },
   mounted() {
     this.getProfile()
     this.getBuildings()
     this.getMyProducts()
+    this.getOrders()
   },
   computed: {
     truncate() {
@@ -233,13 +303,29 @@ export default {
     },
     async getMyProducts() {
       await axios
-          .get('api/products/mine')
+          .get('api/products/mine/')
           .then(response => {
             this.products = response.data
           })
           .catch(error => {
             console.log(error)
           })
+    },
+    async getOrders() {
+      await axios
+          .get(`api/order/mine/?page=${this.page}`)
+          .then(response => {
+            response.data.next ? this.showNextButton = true : this.showNextButton = false;
+            this.orders = response.data.results
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    }
+  },
+  watch: {
+    page() {
+      this.getOrders()
     }
   }
 }
@@ -250,7 +336,11 @@ export default {
   /*max-width: 243px;*/
   background-color: #f1f0e8;;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 8px;
+}
+
+.orders {
+  margin-right: 0 !important;
 }
 
 .card-body {
@@ -265,6 +355,7 @@ export default {
 .scrollable-list {
   display: flex;
   /*max-height: 330px;*/
+  margin-right: 0;
   padding: 16px;
   overflow: auto;
 }
@@ -337,5 +428,35 @@ select {
   /*line-height: 1px;*/
   /*margin: auto;*/
   /*padding: 0;*/
+}
+
+#dropdownMenuButton1 {
+  background-color: transparent;
+}
+
+.text {
+  font-size: 18px;
+}
+
+.name {
+  text-underline-offset: 2px;
+  color: black;
+}
+
+.page-link {
+  color: black;
+}
+
+.page-link:hover {
+  background-color: #fff;
+  text-decoration: none;
+  color: black !important;
+}
+
+.page-link:focus, .page-link:active {
+  outline: none !important;
+  box-shadow: none;
+  color: black !important;
+  background-color: #f5f4f1;
 }
 </style>

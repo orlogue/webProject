@@ -1,19 +1,5 @@
 <template>
   <div class="sidebar col-lg-3 mb-5">
-    <!--    <div class="d-flex">-->
-    <!--      <second-button-->
-    <!--          class="btn_menu mb-2 flex-fill me-2"-->
-    <!--          @click="$router.push({ name: 'Category' })"-->
-    <!--      >-->
-    <!--        Категории-->
-    <!--      </second-button>-->
-    <!--      <button-->
-    <!--          class="btn_menu mb-2 flex-fill"-->
-    <!--          @click="goToProducts"-->
-    <!--      >-->
-    <!--        Все товары-->
-    <!--      </button>-->
-    <!--    </div>-->
     <div class="filter">
       <div class="filter-title">
         Фильтрация
@@ -112,9 +98,6 @@ export default {
     },
     removeFilters() {
       this.$emit('removeFilters')
-      // if (localStorage.getItem('filters')) {
-      //   localStorage.removeItem('filters')
-      // }
     }
   }
 }

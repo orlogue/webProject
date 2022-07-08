@@ -24,18 +24,6 @@ const routes = [
         name: 'ProductDetail'
     },
     {
-        path: '/category',
-        component: CategoriesList,
-        name: 'Category',
-        // beforeEnter: (to, from, next) => {
-        //     if (localStorage.getItem('token')) {
-        //         next()
-        //     } else {
-        //         next({ name: 'Home' })
-        //     }
-        // }
-    },
-    {
         path: '/category/:slug/',
         component: () => import('@/components/pages/CategoriesList')
     },
