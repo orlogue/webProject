@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-$h34r7g=2514#b$=6r1+do&1ezu!#mmfhgm5o1pwwj&6lm$n(e'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -90,6 +90,9 @@ TIME_ZONE = 'Asia/Vladivostok'
 USE_I18N = True
 
 USE_TZ = True
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
