@@ -8,7 +8,7 @@ from telegram.ext import Updater, CallbackContext, MessageHandler, Filters, Call
 from telegram.update import Update
 
 BOT_TOKEN = '5387118179:AAGzi4NzqEj17_hHQi872c3TWWjEoa2Xszk'
-BACKEND_BASE = 'http://127.0.0.1:8000'
+BACKEND_BASE = 'http://backend:8000'
 updater = Updater(BOT_TOKEN, use_context=True)
 
 bot = updater.bot
@@ -100,7 +100,7 @@ def main():
         listen='0.0.0.0',
         port=PORT,
         url_path=BOT_TOKEN,
-        webhook_url='https://98a9-82-162-0-40.eu.ngrok.io/' + BOT_TOKEN
+        webhook_url='https://27c4-62-109-12-7.eu.ngrok.io/' + BOT_TOKEN
     )
     updater.idle()
 

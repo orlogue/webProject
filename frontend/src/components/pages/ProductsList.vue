@@ -289,20 +289,46 @@ export default {
   background-color: #81b29a;
 }
 
-.page-link {
-  color: black;
-}
+/*nav, ul, ul > li {*/
+/*  background-color: transparent !important;*/
+/*  border-radius: 15px !important;*/
+/*}*/
 
-.page-link:hover {
-  background-color: #fff;
-  text-decoration: none;
-  color: black !important;
-}
+/*ul > li {*/
+/*  background-color: #f5f4f1 !important;*/
+/*}*/
 
-.page-link:focus, .page-link:active {
-  outline: none !important;
-  box-shadow: none;
-  color: black !important;
-  background-color: #f5f4f1;
-}
+/*nav > ul {*/
+/*  display: inline-flex;*/
+/*  width: auto;*/
+/*}*/
+
+/*nav > .pagination {*/
+/*  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);*/
+/*}*/
+
+/*.page-link {*/
+/*  color: black;*/
+/*  background-color: #f5f4f1;*/
+/*}*/
+
+/*.page-link:hover {*/
+/*  background-color: inherit;*/
+/*  text-decoration: none;*/
+/*  color: black !important;*/
+/*}*/
+
+/*.disabled {*/
+/*  background-color: #f5f4f1 !important;*/
+/*}*/
+
+/*.page-link:focus, .page-link:active {*/
+/*  outline: none !important;*/
+/*  box-shadow: none;*/
+/*}*/
+
+/*.page-link:active {*/
+/*  background-color: #dadad5;*/
+/*  color: black !important;*/
+/*}*/
 </style>

@@ -114,7 +114,7 @@ export default {
 
               axios.defaults.headers.common["Authorization"] = "Token " + token
               localStorage.setItem("token", token)
-              this.$router.push({name: 'ProductsList'})
+              this.$router.push({name: 'Products'})
             })
       }
     }

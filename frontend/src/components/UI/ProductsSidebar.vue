@@ -120,7 +120,6 @@ export default {
 }
 
 .filter {
-
   background-color: #f1f0e8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px;

@@ -67,7 +67,10 @@
               Мои товары
             </h3>
           </div>
-          <div class="card-body scrollable-list">
+          <div v-if="!products.length" class="card-body px-3 fs-5">
+            {{ empty }}
+          </div>
+          <div v-else class="card-body scrollable-list">
             <div v-for="product in products"
                  :key="product.id"
                  class="card card-item col-7 me-3"
@@ -138,7 +141,7 @@
             <h3 style="margin-bottom: 0;">
               История заказов
             </h3>
-            <nav v-if="products.length"
+            <nav v-if="orders.length"
                  class="ms-auto">
               <ul class="pagination mb-0">
                 <li class="page-item">
@@ -160,7 +163,10 @@
               </ul>
             </nav>
           </div>
-          <div class="card-body orders pt-3 px-4">
+          <div v-if="!orders.length" class="card-body px-3 fs-5">
+            {{ empty }}
+          </div>
+          <div v-else class="card-body orders pt-3 px-4">
             <div class="row mb-3"
                  v-for="order in orders"
                  :key="order.id"
@@ -252,6 +258,7 @@ export default {
       orders: [],
       page: 1,
       showNextButton: false,
+      empty: "Пока что ничего нет!"
     }
   },
   mounted() {
@@ -453,5 +460,28 @@ select {
   box-shadow: none;
   color: black !important;
   background-color: #f5f4f1;
+}
+
+.dropdown-menu {
+  padding: 0;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+}
+
+.dropdown-item:active {
+  background-color: #d5d9de;
+  color: #212529;
+}
+
+ul > li:first-child > .dropdown-item:hover {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+}
+
+ul > li:last-child > .dropdown-item:hover {
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
 }
 </style>

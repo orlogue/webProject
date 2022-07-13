@@ -1,7 +1,10 @@
 <template>
   <div class="cart">
     <p class="fs-2 mb-4">Корзина</p>
-    <div v-if="!cart.items.length">
+    <div v-if="madeOffer">
+      <p class="fs-4">Ваш заказ успешно оформлен. Ожидайте подтверждение от телеграм-бота!</p>
+    </div>
+    <div v-else-if="!cart.items.length">
       <p class="fs-4">Здесь пока что пусто :(</p>
     </div>
     <div v-else>
@@ -77,7 +80,8 @@ export default {
     return {
       cart: {
         items: []
-      }
+      },
+      madeOffer: false
     }
   },
   mixins: [CartMethods],
@@ -118,6 +122,7 @@ export default {
                       console.log(error)
                     })
               })
+              this.madeOffer = true
               this.$store.commit('clearCart')
               this.cart = this.$store.state.cart
             }

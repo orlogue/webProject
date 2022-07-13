@@ -1,5 +1,5 @@
 <template>
-  <footer>orlogue-artanastasion-gulykka ©2022</footer>
+  <footer class="mt-2">orlogue-artanastasion-gulykka ©2022</footer>
 </template>
 
 <script>

@@ -4,7 +4,7 @@ from rest_framework import generics
 
 
 class BuildingsList(generics.ListAPIView):
-    queryset = Building.objects.order_by('name')
+    queryset = Building.objects.order_by('id')
     serializer_class = BuildingSerializer
     permission_classes = [AllowAny]
 

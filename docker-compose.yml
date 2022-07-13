@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    platform: linux/amd64
+    volumes:
+      - .:/backend/db
+      - .:/backend/media
+    ports:
+      - "8000:8000"
+    tty: true
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - redis
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:8080"
+    command: npm run serve
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    restart: always
+
+  celery:
+    build: ./backend
+    restart: always
+    container_name: celery
+    command: celery -A backend worker -l INFO
+    depends_on:
+      - backend
+      - redis
+
+  bot:
+    build: ./backend/bot
+    container_name: bot
+    restart: always
+    ports:
+      - "8443:8443"
+    command: python bot.py
+

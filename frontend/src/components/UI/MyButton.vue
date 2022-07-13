@@ -18,7 +18,7 @@ export default {
 }
 
 .btns:active, :hover {
-  color: #0b182c;
+  color: #212529;
 }
 
 </style>

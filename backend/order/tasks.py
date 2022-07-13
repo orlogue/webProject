@@ -2,7 +2,7 @@ import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from backend.celery_helper import app
+from celery_helper.celery_helper import app
 from bot.bot import bot
 
 
