@@ -164,4 +164,29 @@ nav > .pagination {
   background-color: #dadad5;
   color: black !important;
 }
+
+.page-link {
+  color: black;
+  background-color: #f5f4f1;
+}
+
+.page-link:hover {
+  background-color: inherit;
+  text-decoration: none;
+  color: black !important;
+}
+
+.disabled {
+  background-color: #f5f4f1 !important;
+}
+
+.page-link:focus, .page-link:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.page-link:active {
+  background-color: #dadad5;
+  color: black !important;
+}
 </style>
