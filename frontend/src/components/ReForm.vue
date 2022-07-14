@@ -5,7 +5,7 @@
       <div class="fs-5 mb-2">
         <label>Номер телефона</label>
         <div class="flex-fill">
-          <input type="text" class="form-input-reg" v-model="phone_number">
+          <input type="text" minlength="11" maxlength="11" class="form-input-reg" v-model="phone_number">
         </div>
       </div>
       <div class="fs-5 mb-2">
