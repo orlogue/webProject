@@ -1,5 +1,5 @@
 <template>
-  <div class="registration">
+  <div v-if="singUpContent" class="registration">
     <h1 class="mb-4 text-center">Регистрация</h1>
     <form class="d-flex flex-column justify-content-center" @submit.prevent="submitForm">
       <div class="fs-5 mb-2">
@@ -50,6 +50,25 @@
       <button class="btn_aut mt-4">Зарегистрироваться</button>
     </form>
   </div>
+  <div v-else class="registration-final">
+    <div class="d-flex flex-column justify-content-center">
+      <h3 class="mb-4 text-center">Завершение регистрации</h3>
+      <p class="fs-5">Для полной работы сайта необходимо перейти в телеграм-бота
+        и cледовать инструкции.</p>
+      <p class="fs-5"> Тг-бот нужен для подтверждения продажи продавцом
+        и получения уведомления о покупке.
+      </p>
+      <a href="https://t.me/fefumarket_bot"
+         target="_blank"
+         class="mt-2 mx-auto"
+         @click="this.$router.push({name: 'Products'})"
+      >
+        <button class="btn_aut"
+        >Телеграм-бот
+        </button>
+      </a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -68,7 +87,8 @@ export default {
       room: '',
       password: '',
       password2: '',
-      error: ''
+      error: '',
+      singUpContent: true
     }
   },
   mixins: [API],
@@ -114,8 +134,8 @@ export default {
 
               axios.defaults.headers.common["Authorization"] = "Token " + token
               localStorage.setItem("token", token)
-              this.$router.push({name: 'Products'})
             })
+        this.singUpContent = false
       }
     }
   }
@@ -125,6 +145,12 @@ export default {
 <style scoped>
 .registration {
   max-width: 256px;
+  margin: 10px 40px;
+  padding: 0;
+}
+
+.registration-final {
+  max-width: 340px;
   margin: 10px 40px;
   padding: 0;
 }

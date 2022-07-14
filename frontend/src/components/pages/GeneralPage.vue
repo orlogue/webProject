@@ -104,7 +104,7 @@ export default {
   border-radius: 4px;
   border: 1px;
   color: #f4f1de;
-  transition: all .4s;
+  transition: all .3s;
 }
 
 .btn_aut:hover {
