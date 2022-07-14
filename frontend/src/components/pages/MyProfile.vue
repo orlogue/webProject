@@ -167,7 +167,7 @@
             {{ empty }}
           </div>
           <div v-else class="card-body orders pt-3 px-4">
-            <div class="row mb-3"
+            <div class="row mb-2"
                  v-for="order in orders"
                  :key="order.id"
             >
