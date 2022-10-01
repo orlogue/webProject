@@ -100,7 +100,7 @@ def main():
         listen='0.0.0.0',
         port=PORT,
         url_path=BOT_TOKEN,
-        webhook_url='https://27c4-62-109-12-7.eu.ngrok.io/' + BOT_TOKEN
+        webhook_url='https://3faf-37-29-88-107.eu.ngrok.io/' + BOT_TOKEN
     )
     updater.idle()
 
